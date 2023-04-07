@@ -1,7 +1,6 @@
-package com.example.edp_wypozyczalnia_samochodow;
+package com.example.car_rental;
 
 import javafx.application.Application;
-import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication

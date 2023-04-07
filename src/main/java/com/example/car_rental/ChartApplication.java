@@ -1,4 +1,4 @@
-package com.example.edp_wypozyczalnia_samochodow;
+package com.example.car_rental;
 
 import javafx.application.Application;
 import javafx.application.Platform;
