@@ -13,7 +13,7 @@ public class ChartApplication extends Application {
 
     @Override
     public void init() {
-        applicationContext = new SpringApplicationBuilder(EdpWypozyczalniaSamochodowApplication.class).run();
+        applicationContext = new SpringApplicationBuilder(CarRentalApplication.class).run();
     }
 
     @Override

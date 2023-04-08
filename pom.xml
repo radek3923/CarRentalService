@@ -9,10 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.example</groupId>
-    <artifactId>EDP_wypozyczalnia_samochodow</artifactId>
+    <artifactId>CarRental</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>EDP_wypozyczalnia_samochodow</name>
-    <description>EDP_wypozyczalnia_samochodow</description>
+    <name>CarRental</name>
+    <description>CarRental</description>
     <properties>
         <java.version>17</java.version>
     </properties>
@@ -35,7 +35,7 @@
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-base</artifactId>
-            <version>13-ea+14b</version>
+            <version>19.0.2.1</version>
         </dependency>
         <dependency>
             <groupId>org.openjfx</groupId>
