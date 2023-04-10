@@ -1,4 +1,4 @@
-package com.example.car_rental;
+package pl.potocki.carrentalservice.application;
 
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -13,7 +13,7 @@ public class ChartApplication extends Application {
 
     @Override
     public void init() {
-        applicationContext = new SpringApplicationBuilder(CarRentalApplication.class).run();
+        applicationContext = new SpringApplicationBuilder(CarRentalServiceApplication.class).run();
     }
 
     @Override

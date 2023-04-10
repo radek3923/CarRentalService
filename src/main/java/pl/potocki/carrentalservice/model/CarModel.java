@@ -1,4 +1,4 @@
-package com.example.car_rental.model;
+package pl.potocki.carrentalservice.model;
 
 public class CarModel {
     private int id;

@@ -8,11 +8,11 @@
         <version>3.0.5</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>com.example</groupId>
-    <artifactId>CarRental</artifactId>
+    <groupId>pl.potocki</groupId>
+    <artifactId>CarRentalService</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>CarRental</name>
-    <description>CarRental</description>
+    <name>CarRentalService</name>
+    <description>CarRentalService</description>
     <properties>
         <java.version>17</java.version>
     </properties>
@@ -34,11 +34,6 @@
         </dependency>
         <dependency>
             <groupId>org.openjfx</groupId>
-            <artifactId>javafx-base</artifactId>
-            <version>19.0.2.1</version>
-        </dependency>
-        <dependency>
-            <groupId>org.openjfx</groupId>
             <artifactId>javafx-graphics</artifactId>
             <version>19.0.2.1</version>
         </dependency>
@@ -46,6 +41,11 @@
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-fxml</artifactId>
             <version>19.0.2.1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>2.14.2</version>
         </dependency>
     </dependencies>
 
