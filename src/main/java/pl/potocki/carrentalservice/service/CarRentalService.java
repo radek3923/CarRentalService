@@ -30,13 +30,6 @@ public class CarRentalService {
 
         System.out.println(jsonNode.get("data"));
 
-//        if (jsonNode.get("Response").textValue().equals("False")) {
-//            log.info("Movies not found");
-//            return Collections.emptyList();
-//        }
-//
-//        List<JsonNode> carModels = getImdbIDFromMoviesList(jsonNode.get("Search"));
-
         return new ArrayList<>();
     }
 }
