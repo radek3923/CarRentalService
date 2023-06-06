@@ -1,4 +1,4 @@
 package pl.potocki.carrentalservice.model;
 
-public class Rental {
+public class CarRental {
 }
