@@ -4,9 +4,11 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import pl.potocki.carrentalservice.car.model.Car;
 import pl.potocki.carrentalservice.car.model.dto.CarMakeDto;
 import pl.potocki.carrentalservice.car.service.CarService;
 
+import javax.swing.text.html.ImageView;
 import java.time.LocalDate;
 
 @Component
@@ -34,10 +36,10 @@ public class ChartController {
 //    @FXML
 //    public TableView<Car> carTableView;
 //    @FXML
-//    public TableColumn<> carColumn1;
+//    public TableColumn<?, ImageView> carColumn1;
 //
 //    @FXML
-//    public TableColumn carColumn2;
+//    public TableColumn<> carColumn2;
 //
 //    @FXML
 //    public TableColumn carColumn3;
