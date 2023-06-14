@@ -1,4 +1,4 @@
-package pl.potocki.carrentalservice.application;
+package pl.potocki.carrentalservice.view.application;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;

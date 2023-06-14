@@ -1,4 +1,4 @@
-package pl.potocki.carrentalservice.model;
+package pl.potocki.carrentalservice.carRental.model;
 
 
 import jakarta.persistence.*;

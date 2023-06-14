@@ -1,11 +1,11 @@
-package pl.potocki.carrentalservice.controler;
+package pl.potocki.carrentalservice.view.controler;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import pl.potocki.carrentalservice.model.carApi.CarMakeDto;
-import pl.potocki.carrentalservice.service.CarService;
+import pl.potocki.carrentalservice.car.model.dto.CarMakeDto;
+import pl.potocki.carrentalservice.car.service.CarService;
 
 import java.time.LocalDate;
 

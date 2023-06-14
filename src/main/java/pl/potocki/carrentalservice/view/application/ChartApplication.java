@@ -1,4 +1,4 @@
-package pl.potocki.carrentalservice.application;
+package pl.potocki.carrentalservice.view.application;
 
 import javafx.application.Application;
 import javafx.application.Platform;

@@ -1,11 +1,11 @@
-package pl.potocki.carrentalservice.service;
+package pl.potocki.carrentalservice.car.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
-import pl.potocki.carrentalservice.model.carApi.CarDataDto;
-import pl.potocki.carrentalservice.model.carApi.CarMakeDto;
+import pl.potocki.carrentalservice.car.model.dto.CarDataDto;
+import pl.potocki.carrentalservice.car.model.dto.CarMakeDto;
 
 import java.net.URL;
 import java.util.List;

@@ -1,4 +1,4 @@
-package pl.potocki.carrentalservice.model;
+package pl.potocki.carrentalservice.car.model;
 
 public class CarModel {
     private int id;

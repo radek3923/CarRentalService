@@ -2,8 +2,7 @@ package pl.potocki.carrentalservice;
 
 import javafx.application.Application;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.ComponentScan;
-import pl.potocki.carrentalservice.application.ChartApplication;
+import pl.potocki.carrentalservice.view.application.ChartApplication;
 
 @SpringBootApplication
 //@ComponentScan(basePackages = {"pl.potocki.carrentalservice"})

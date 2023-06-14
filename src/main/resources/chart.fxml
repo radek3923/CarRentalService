@@ -45,7 +45,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox prefHeight="757.0" prefWidth="1256.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.potocki.carrentalservice.controler.ChartController">
+<VBox prefHeight="757.0" prefWidth="1256.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.potocki.carrentalservice.view.controler.ChartController">
    <children>
       <SplitPane dividerPositions="0.2511961722488038" prefHeight="759.0" prefWidth="1256.0">
         <items>
