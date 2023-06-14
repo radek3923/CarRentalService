@@ -1,20 +1,19 @@
-package pl.potocki.carrentalservice.application;
+package pl.potocki.carrentalservice.controler;
 
 import javafx.fxml.FXML;
-import javafx.geometry.Pos;
 import javafx.scene.control.*;
-import javafx.scene.effect.DropShadow;
-import javafx.scene.effect.Reflection;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import java.nio.file.Paths;
+import pl.potocki.carrentalservice.model.carApi.CarMakeDto;
+import pl.potocki.carrentalservice.service.CarService;
+
 import java.time.LocalDate;
 
 @Component
+@RequiredArgsConstructor
 public class ChartController {
+
+    private final CarService carRentalService;
     private final String defaultPrice = "100";
     private final String maxPrice = "1000";
 
@@ -32,10 +31,24 @@ public class ChartController {
     @FXML
     public DatePicker dateToDatePicker;
 
-    @FXML
-    public ImageView backgroundImageView;
-    @FXML
-    public Label backgroundLabel;
+//    @FXML
+//    public TableView<Car> carTableView;
+//    @FXML
+//    public TableColumn<> carColumn1;
+//
+//    @FXML
+//    public TableColumn carColumn2;
+//
+//    @FXML
+//    public TableColumn carColumn3;
+//
+//    @FXML
+//    public TableColumn carColumn4;
+//
+//    @FXML
+//    public ImageView backgroundImageView;
+//    @FXML
+//    public Label backgroundLabel;
 
     @FXML
     public void initialize() {
@@ -46,8 +59,8 @@ public class ChartController {
         dateFromDatePicker.setValue(LocalDate.now());
         dateToDatePicker.setValue(LocalDate.now().plusDays(1));
 
-        setBackgroundImageView();
-        setBackgroundLabel();
+//        setBackgroundImageView();
+//        setBackgroundLabel();
 
         searchButton.setOnAction(
                 actionEvent -> searchCarsButtonAction());
@@ -55,18 +68,18 @@ public class ChartController {
         setPriceRangeSlider();
     }
 
-    public void setBackgroundImageView(){
-        String currentPath = Paths.get(".").toAbsolutePath().normalize().toString();
-        String backroundImagePath = currentPath + "\\mountains.jpg";
-
-        Image backgroundImage = new Image(backroundImagePath, backgroundImageView.getFitWidth(),
-                backgroundImageView.getFitHeight(), false, false);
-
-
-        backgroundImageView.setImage(backgroundImage);
-        backgroundImageView.setOpacity(0.7);
-
-    }
+//    public void setBackgroundImageView(){
+//        String currentPath = Paths.get(".").toAbsolutePath().normalize().toString();
+//        String backroundImagePath = currentPath + "\\mountains.jpg";
+//
+//        Image backgroundImage = new Image(backroundImagePath, backgroundImageView.getFitWidth(),
+//                backgroundImageView.getFitHeight(), false, false);
+//
+//
+//        backgroundImageView.setImage(backgroundImage);
+//        backgroundImageView.setOpacity(0.7);
+//
+//    }
 
     public void setPriceRangeSlider(){
         priceRangeSlider.setMin(0);
@@ -100,27 +113,32 @@ public class ChartController {
 
 
     public void searchCarsButtonAction(){
-        System.out.println(dateFromDatePicker.getValue());
-        System.out.println(dateToDatePicker.getValue());
+//        System.out.println(dateFromDatePicker.getValue());
+//        System.out.println(dateToDatePicker.getValue());
+
+
+        for(CarMakeDto carMakeDto : carRentalService.getAllCarMakes()){
+            System.out.println(carMakeDto.getName());
+        }
     }
 
-    public void setBackgroundLabel(){
-        backgroundLabel.setText("Car Rental Service");
-        backgroundLabel.setFont(new Font("Brush Script MT", 80));
-        backgroundLabel.setTextFill(Color.web("#0076a3"));
-
-        backgroundLabel.setAlignment(Pos.CENTER);
-
-        DropShadow dropShadow = new DropShadow();
-        dropShadow.setOffsetX(5);
-        dropShadow.setOffsetY(5);
-        dropShadow.setColor(Color.GRAY);
-        backgroundLabel.setEffect(dropShadow);
-
-        Reflection reflection = new Reflection();
-        reflection.setFraction(0.8);
-        backgroundLabel.setEffect(reflection);
-
-        backgroundLabel.setStyle("-fx-background-color: transparent; -fx-border-color: transparent; -fx-padding: 10px;");
-    }
+//    public void setBackgroundLabel(){
+//        backgroundLabel.setText("Car Rental Service");
+//        backgroundLabel.setFont(new Font("Brush Script MT", 80));
+//        backgroundLabel.setTextFill(Color.web("#0076a3"));
+//
+//        backgroundLabel.setAlignment(Pos.CENTER);
+//
+//        DropShadow dropShadow = new DropShadow();
+//        dropShadow.setOffsetX(5);
+//        dropShadow.setOffsetY(5);
+//        dropShadow.setColor(Color.GRAY);
+//        backgroundLabel.setEffect(dropShadow);
+//
+//        Reflection reflection = new Reflection();
+//        reflection.setFraction(0.8);
+//        backgroundLabel.setEffect(reflection);
+//
+//        backgroundLabel.setStyle("-fx-background-color: transparent; -fx-border-color: transparent; -fx-padding: 10px;");
+//    }
 }
