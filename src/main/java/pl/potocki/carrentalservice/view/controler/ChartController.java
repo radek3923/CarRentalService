@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import pl.potocki.carrentalservice.car.model.Car;
 import pl.potocki.carrentalservice.car.model.dto.CarMakeDto;
+import pl.potocki.carrentalservice.car.model.dto.CarTrimDto;
 import pl.potocki.carrentalservice.car.service.CarService;
 
 import javax.swing.text.html.ImageView;
@@ -119,8 +120,8 @@ public class ChartController {
 //        System.out.println(dateToDatePicker.getValue());
 
 
-        for(CarMakeDto carMakeDto : carRentalService.getAllCarMakes()){
-            System.out.println(carMakeDto.getName());
+        for(CarTrimDto carMakeDto : carRentalService.getAllCarTrims("BMW", "")){
+            System.out.println(carMakeDto.toString());
         }
     }
 
