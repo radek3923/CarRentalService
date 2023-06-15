@@ -33,11 +33,11 @@ public class ChartController {
     @FXML
     public DatePicker dateToDatePicker;
 
-//    @FXML
-//    public TableView<Car> carTableView;
-//    @FXML
-//    public TableColumn<?, ImageView> carColumn1;
-//
+    @FXML
+    public TableView<Car> carTableView;
+    @FXML
+    public TableColumn<?, ImageView> carColumn1;
+
 //    @FXML
 //    public TableColumn<> carColumn2;
 //

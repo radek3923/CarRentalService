@@ -4,8 +4,10 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import lombok.Data;
 
 @Entity
+@Data
 public class Car {
 
     @Id
@@ -15,4 +17,8 @@ public class Car {
     private String carMake;
 
     private String carModel;
+
+    private int year;
+
+    private String description;
 }

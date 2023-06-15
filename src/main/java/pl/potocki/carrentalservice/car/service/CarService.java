@@ -1,11 +1,13 @@
 package pl.potocki.carrentalservice.car.service;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
 import pl.potocki.carrentalservice.car.model.dto.CarDataDto;
 import pl.potocki.carrentalservice.car.model.dto.CarMakeDto;
+import pl.potocki.carrentalservice.car.model.dto.CarModelDto;
 
 import java.net.URL;
 import java.util.List;
@@ -14,10 +16,19 @@ import java.util.List;
 @AllArgsConstructor
 public class CarService {
     private final ObjectMapper objectMapper = new ObjectMapper();
+    private final String API_URL = "https://carapi.app";
+    private final String YEAR = "2020";
 
     @SneakyThrows
     public List<CarMakeDto> getAllCarMakes() {
-        CarDataDto carDataDto = objectMapper.readValue(new URL("https://carapi.app/api/makes"), CarDataDto.class);
-        return carDataDto.getCarMakes();
+        CarDataDto carDataDto = objectMapper.readValue(new URL(API_URL + "/api/makes"), CarDataDto.class);
+        return objectMapper.convertValue(carDataDto.getCarData(), new TypeReference<List<CarMakeDto>>() {});
+    }
+
+    @SneakyThrows
+    public List<CarModelDto> getAllCarModels(String carMake) {
+        URL url = new URL(API_URL + "/api/models?year=" + YEAR + "&make=" + carMake);
+        CarDataDto carDataDto = objectMapper.readValue(url, CarDataDto.class);
+        return objectMapper.convertValue(carDataDto.getCarData(), new TypeReference<List<CarModelDto>>() {});
     }
 }
