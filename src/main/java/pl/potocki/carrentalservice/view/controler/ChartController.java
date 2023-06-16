@@ -15,6 +15,7 @@ import pl.potocki.carrentalservice.car.service.CarService;
 import javax.swing.text.html.ImageView;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
@@ -97,7 +98,7 @@ public class ChartController {
 //
 //    }
 
-    public void setPriceRangeSlider(){
+    public void setPriceRangeSlider() {
         priceRangeSlider.setMin(0);
         priceRangeSlider.setMax(Integer.parseInt(maxPrice));
         priceRangeSlider.setValue(Integer.parseInt(defaultPrice));
@@ -127,42 +128,45 @@ public class ChartController {
         });
     }
 
-    public void setDefaultCarMakes(){
-        carMakesComboBox.getItems().addAll(carService.getAllCarMakes().stream()
-                .map(CarMakeDto::getName)
-                .toList());
+    public void setDefaultCarMakes() {
 
-        carMakesComboBox.getSelectionModel().selectFirst();
+        List<String> carMakes = carService.getAllCarMakes().stream()
+                .map(CarMakeDto::getName)
+                .collect(Collectors.toList());
+
+        carMakes.add(0, "");
+        carMakesComboBox.getItems().addAll(carMakes);
+        carMakesComboBox.getSelectionModel().select(1);
+
         updateCarModels(carMakesComboBox.getSelectionModel().getSelectedItem());
 
         carMakesComboBox.setOnAction(event -> {
             String selectedCarMake = carMakesComboBox.getValue();
-            log.info("User selected car make: {}",selectedCarMake);
+            log.info("User selected car make: {}", selectedCarMake);
             updateCarModels(selectedCarMake);
         });
     }
 
-    public void updateCarModels(String carMake){
+    public void updateCarModels(String carMake) {
         carModelsComboBox.getItems().clear();
-        log.info("Clearing all car models in comboBox");
-
         List<String> carModels = carService.getAllCarModels(carMake).stream()
                 .map(CarModelDto::getName)
-                .toList();
+                .collect(Collectors.toList());
+        carModels.add(0, "");
 
         carModelsComboBox.getItems().addAll(carModels);
         log.info("Added car models to comboBox: {}", carModels);
 
-        carModelsComboBox.getSelectionModel().selectFirst();
+        carModelsComboBox.getSelectionModel().select(1);
     }
 
 
-    public void searchCarsButtonAction(){
+    public void searchCarsButtonAction() {
 //        System.out.println(dateFromDatePicker.getValue());
 //        System.out.println(dateToDatePicker.getValue());
 
 
-        for(CarTrimDto carMakeDto : carService.getAllCarTrims("BMW", "")){
+        for (CarTrimDto carMakeDto : carService.getAllCarTrims("BMW", "")) {
             System.out.println(carMakeDto.toString());
         }
     }
