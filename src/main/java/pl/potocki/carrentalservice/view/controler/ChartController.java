@@ -29,6 +29,8 @@ public class ChartController {
     @FXML
     public Button searchButton;
     @FXML
+    public Button clearButton;
+    @FXML
     public TextField priceRangeFromTextField;
     @FXML
     public TextField priceRangeToTextField;
@@ -80,6 +82,10 @@ public class ChartController {
 
         searchButton.setOnAction(
                 actionEvent -> searchCarsButtonAction());
+
+        clearButton.setOnAction(
+                actionEvent -> clearSearchingOptionsButtonAction()
+        );
 
         setPriceRangeSlider();
         setDefaultCarMakes();
@@ -158,6 +164,12 @@ public class ChartController {
         log.info("Added car models to comboBox: {}", carModels);
 
         carModelsComboBox.getSelectionModel().select(1);
+    }
+
+    public void clearSearchingOptionsButtonAction(){
+        carMakesComboBox.getSelectionModel().select(0);
+        carModelsComboBox.getSelectionModel().select(0);
+        //TODO add more default searching options in future
     }
 
 
