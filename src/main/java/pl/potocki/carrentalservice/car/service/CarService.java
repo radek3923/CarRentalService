@@ -22,7 +22,7 @@ public class CarService {
 
     @SneakyThrows
     public List<CarMakeDto> getAllCarMakes() {
-        CarDataDto carDataDto = objectMapper.readValue(new URL(API_URL + "/api/makes"), CarDataDto.class);
+        CarDataDto carDataDto = objectMapper.readValue(new URL(API_URL + "/api/makes?year=" +YEAR), CarDataDto.class);
         return objectMapper.convertValue(carDataDto.getCarData(), new TypeReference<List<CarMakeDto>>() {});
     }
 

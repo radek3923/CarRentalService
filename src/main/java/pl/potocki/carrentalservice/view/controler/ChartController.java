@@ -1,22 +1,27 @@
 package pl.potocki.carrentalservice.view.controler;
 
+import ch.qos.logback.classic.Logger;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import pl.potocki.carrentalservice.car.model.Car;
 import pl.potocki.carrentalservice.car.model.dto.CarMakeDto;
+import pl.potocki.carrentalservice.car.model.dto.CarModelDto;
 import pl.potocki.carrentalservice.car.model.dto.CarTrimDto;
 import pl.potocki.carrentalservice.car.service.CarService;
 
 import javax.swing.text.html.ImageView;
 import java.time.LocalDate;
+import java.util.List;
 
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class ChartController {
 
-    private final CarService carRentalService;
+    private final CarService carService;
     private final String defaultPrice = "100";
     private final String maxPrice = "1000";
 
@@ -35,9 +40,16 @@ public class ChartController {
     public DatePicker dateToDatePicker;
 
     @FXML
+    public ComboBox<String> carMakesComboBox;
+
+    @FXML
+    public ComboBox<String> carModelsComboBox;
+
+    @FXML
     public TableView<Car> carTableView;
     @FXML
     public TableColumn<?, ImageView> carColumn1;
+
 
 //    @FXML
 //    public TableColumn<> carColumn2;
@@ -69,6 +81,7 @@ public class ChartController {
                 actionEvent -> searchCarsButtonAction());
 
         setPriceRangeSlider();
+        setDefaultCarMakes();
     }
 
 //    public void setBackgroundImageView(){
@@ -97,7 +110,7 @@ public class ChartController {
                 priceRangeSlider.setValue(value);
             }
         });
-//
+
         priceRangeToTextField.textProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue.matches("\\d*")) {
                 priceRangeToTextField.setText(oldValue);
@@ -114,13 +127,42 @@ public class ChartController {
         });
     }
 
+    public void setDefaultCarMakes(){
+        carMakesComboBox.getItems().addAll(carService.getAllCarMakes().stream()
+                .map(CarMakeDto::getName)
+                .toList());
+
+        carMakesComboBox.getSelectionModel().selectFirst();
+        updateCarModels(carMakesComboBox.getSelectionModel().getSelectedItem());
+
+        carMakesComboBox.setOnAction(event -> {
+            String selectedCarMake = carMakesComboBox.getValue();
+            log.info("User selected car make: {}",selectedCarMake);
+            updateCarModels(selectedCarMake);
+        });
+    }
+
+    public void updateCarModels(String carMake){
+        carModelsComboBox.getItems().clear();
+        log.info("Clearing all car models in comboBox");
+
+        List<String> carModels = carService.getAllCarModels(carMake).stream()
+                .map(CarModelDto::getName)
+                .toList();
+
+        carModelsComboBox.getItems().addAll(carModels);
+        log.info("Added car models to comboBox: {}", carModels);
+
+        carModelsComboBox.getSelectionModel().selectFirst();
+    }
+
 
     public void searchCarsButtonAction(){
 //        System.out.println(dateFromDatePicker.getValue());
 //        System.out.println(dateToDatePicker.getValue());
 
 
-        for(CarTrimDto carMakeDto : carRentalService.getAllCarTrims("BMW", "")){
+        for(CarTrimDto carMakeDto : carService.getAllCarTrims("BMW", "")){
             System.out.println(carMakeDto.toString());
         }
     }
