@@ -1,10 +1,14 @@
 package pl.potocki.carrentalservice.view.controler;
 
-import ch.qos.logback.classic.Logger;
+import com.luciad.imageio.webp.WebPReadParam;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import net.coobird.thumbnailator.tasks.io.URLImageSource;
 import org.springframework.stereotype.Component;
 import pl.potocki.carrentalservice.car.model.Car;
 import pl.potocki.carrentalservice.car.model.dto.CarMakeDto;
@@ -12,10 +16,18 @@ import pl.potocki.carrentalservice.car.model.dto.CarModelDto;
 import pl.potocki.carrentalservice.car.model.dto.CarTrimDto;
 import pl.potocki.carrentalservice.car.service.CarService;
 
-import javax.swing.text.html.ImageView;
+import javax.imageio.ImageIO;
+import javax.imageio.ImageReader;
+import javax.imageio.stream.FileImageInputStream;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
+
 
 @Component
 @RequiredArgsConstructor
@@ -54,7 +66,7 @@ public class ChartController {
     public TableColumn<?, ImageView> carColumn1;
 
 
-//    @FXML
+    //    @FXML
 //    public TableColumn<> carColumn2;
 //
 //    @FXML
@@ -63,13 +75,54 @@ public class ChartController {
 //    @FXML
 //    public TableColumn carColumn4;
 //
-//    @FXML
-//    public ImageView backgroundImageView;
+    @FXML
+    public ImageView backgroundImageView;
 //    @FXML
 //    public Label backgroundLabel;
 
     @FXML
-    public void initialize() {
+    ImageView carViewTest;
+
+    @FXML
+    public void initialize() throws IOException {
+
+//        String urlAsWebp = "https://apartamentyzakopane.pl/blog/wp-content/uploads/2020/11/20120821_IMG_7221.jpg";
+//
+//        String urlAsWebp = "https://cdn.imagin.studio/getImage?&customer=plpretius&make=BMW&modelFamily=4 Series";
+//
+//
+//        URL url = new URL(urlAsWebp);
+//
+//        String inputWebpPath = "test_pic/car.webp";
+//        String outputJpgPath = "test_pic/car.jpg";
+//
+//        // Obtain a WebP ImageReader instance
+//        ImageReader reader = ImageIO.getImageReadersByMIMEType("image/webp").next();
+//
+//        // Configure decoding parameters
+//        WebPReadParam readParam = new WebPReadParam();
+//        readParam.setBypassFiltering(true);
+//
+//        // Configure the input on the ImageReader
+//        reader.setInput(new FileImageInputStream(new File(inputWebpPath)));
+//
+//        // Decode the image
+//        BufferedImage image = reader.read(0, readParam);
+//
+//        ImageIO.write(image, "jpg", new File(outputJpgPath));
+
+        String imageUrl = "https://cdn.imagin.studio/getImage?&customer=plpretius&make=BMW&modelFamily=4 Series";
+
+        // Pobierz obraz z podanego URL
+        BufferedImage bufferedImage = downloadImageFromURL(imageUrl);
+
+        // Konwertuj BufferedImage na Image
+        Image image = convertBufferedImageToImage(bufferedImage);
+
+        carViewTest.setImage(image);
+        System.out.println("Testowa wiadomość");
+
+
         searchButton.setText("Search");
         priceRangeFromTextField.setText(defaultPrice);
         priceRangeToTextField.setText(maxPrice);
@@ -91,6 +144,14 @@ public class ChartController {
         setDefaultCarMakes();
     }
 
+    private BufferedImage downloadImageFromURL(String imageUrl) throws IOException {
+        URL url = new URL(imageUrl);
+        return ImageIO.read(url);
+    }
+
+    private Image convertBufferedImageToImage(BufferedImage bufferedImage) {
+        return javafx.embed.swing.SwingFXUtils.toFXImage(bufferedImage, null);
+    }
 //    public void setBackgroundImageView(){
 //        String currentPath = Paths.get(".").toAbsolutePath().normalize().toString();
 //        String backroundImagePath = currentPath + "\\mountains.jpg";
@@ -104,6 +165,8 @@ public class ChartController {
 //
 //    }
 
+    
+    
     public void setPriceRangeSlider() {
         priceRangeSlider.setMin(0);
         priceRangeSlider.setMax(Integer.parseInt(maxPrice));
@@ -166,7 +229,7 @@ public class ChartController {
         carModelsComboBox.getSelectionModel().select(1);
     }
 
-    public void clearSearchingOptionsButtonAction(){
+    public void clearSearchingOptionsButtonAction() {
         carMakesComboBox.getSelectionModel().select(0);
         carModelsComboBox.getSelectionModel().select(0);
         //TODO add more default searching options in future
