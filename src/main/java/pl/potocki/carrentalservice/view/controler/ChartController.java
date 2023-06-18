@@ -201,7 +201,7 @@ public class ChartController {
         ObservableList<CarImage> carImages = FXCollections.observableList(imagesFromCars);
 
         carImagesColumn.setCellValueFactory((new PropertyValueFactory<>("image")));
-        carImagesTableView.setFixedCellSize(155);
+        carImagesTableView.setFixedCellSize(150);
         carImagesTableView.setItems(carImages);
     }
 
@@ -209,9 +209,9 @@ public class ChartController {
         return cars.stream()
                 .map(c -> {
                     ImageView imageView = new ImageView(carService.getCarImage(c.getCarMake(), c.getCarModel()));
-                    imageView.setFitHeight(150);
-                    imageView.maxHeight(150);
-                    imageView.setFitWidth(180);
+                    imageView.setFitHeight(180);
+                    imageView.maxHeight(180);
+                    imageView.setFitWidth(300);
                     return new CarImage(imageView);
                 })
                 .toList();
@@ -240,7 +240,7 @@ public class ChartController {
         carModelColumn.setCellValueFactory((new PropertyValueFactory<>("carModel")));
         carYearColumn.setCellValueFactory((new PropertyValueFactory<>("year")));
         carDescriptionColumn.setCellValueFactory((new PropertyValueFactory<>("description")));
-        tableView.setFixedCellSize(140);
+        tableView.setFixedCellSize(150);
     }
 
 //    public void setBackgroundLabel(){
