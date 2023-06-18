@@ -137,7 +137,7 @@ public class HomeStageController {
     private void handleOpenRentalCarsStage() throws IOException {
         Stage newWindow = new Stage();
         FXMLLoader loader = new FXMLLoader(rentalCarsStageResource.getURL());
-        loader.setController(new RentalCarsStageController());
+        loader.setController(new RentalCarsStageController(carRentalService));
         Scene scene = new Scene(loader.load());
         newWindow.setScene(scene);
         newWindow.show();

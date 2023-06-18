@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import pl.potocki.carrentalservice.carRental.model.CarRental;
 import pl.potocki.carrentalservice.carRental.repository.CarRentalRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 @AllArgsConstructor
@@ -22,5 +23,9 @@ public class CarRentalService {
     public CarRental addCarRental(CarRental carRental){
         log.info("Adding car rental: {}", carRental);
         return carRentalRepository.save(carRental);
+    }
+
+    public List<CarRental> findAll() {
+        return carRentalRepository.findAll();
     }
 }
