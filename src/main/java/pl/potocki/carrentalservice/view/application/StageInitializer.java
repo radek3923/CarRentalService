@@ -13,8 +13,8 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 @Component
 public class StageInitializer implements ApplicationListener<ChartApplication.StageReadyEvent> {
-    @Value("classpath:/chart.fxml")
-    private Resource charResource;
+    @Value("classpath:/stages/HomeStage.fxml")
+    private Resource chartResource;
     private final String applicationTitle;
     private ApplicationContext applicationContext;
 
@@ -27,7 +27,7 @@ public class StageInitializer implements ApplicationListener<ChartApplication.St
     @Override
     public void onApplicationEvent(ChartApplication.StageReadyEvent event) {
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader(charResource.getURL());
+            FXMLLoader fxmlLoader = new FXMLLoader(chartResource.getURL());
             fxmlLoader.setControllerFactory(aClass -> applicationContext.getBean(aClass));
             Parent parent = fxmlLoader.load();
 

@@ -4,13 +4,18 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
 import pl.potocki.carrentalservice.car.model.Car;
 import pl.potocki.carrentalservice.car.model.CarImage;
@@ -20,6 +25,7 @@ import pl.potocki.carrentalservice.car.service.CarService;
 import pl.potocki.carrentalservice.carRental.model.CarRental;
 import pl.potocki.carrentalservice.carRental.service.CarRentalService;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
@@ -29,13 +35,16 @@ import java.util.stream.Collectors;
 @Component
 @RequiredArgsConstructor
 @Slf4j
-public class ChartController {
+public class HomeStageController {
 
     private final CarService carService;
     private final CarRentalService carRentalService;
     private final String defaultPrice = "100";
     private final String maxPrice = "1000";
 
+
+    @Value("classpath:/stages/RentalCarsStage.fxml")
+    private Resource rentalCarsStageResource;
     @FXML
     public Button searchButton;
     @FXML
@@ -48,8 +57,6 @@ public class ChartController {
     public TextField priceRangeFromTextField;
     @FXML
     public TextField priceRangeToTextField;
-    @FXML
-    public Slider priceRangeSlider;
     @FXML
     protected ScrollBar scroll;
 
@@ -87,14 +94,21 @@ public class ChartController {
         dateFromDatePicker.setValue(LocalDate.now());
         dateToDatePicker.setValue(LocalDate.now().plusDays(1));
 
-//        setBackgroundImageView();
-//        setBackgroundLabel();
-
         searchButton.setOnAction(
                 actionEvent -> searchCarsButtonAction());
 
         clearButton.setOnAction(
                 actionEvent -> clearSearchingOptionsButtonAction()
+        );
+
+        seeRentalCarsButton.setOnAction(
+                actionEvent -> {
+                    try {
+                        handleOpenRentalCarsStage();
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
         );
 
         carDataTableView.getSelectionModel().selectedItemProperty()
@@ -113,13 +127,20 @@ public class ChartController {
                     carDataTableView.getSelectionModel().clearAndSelect(newValue.intValue());
                 });
 
-
-        setPriceRangeSlider();
         setDefaultCarMakes();
         setScrollBar(carDataTableView);
 
         carImagesTableView.addEventFilter(ScrollEvent.ANY, Event::consume);
         carDataTableView.addEventFilter(ScrollEvent.ANY, Event::consume);
+    }
+
+    private void handleOpenRentalCarsStage() throws IOException {
+        Stage newWindow = new Stage();
+        FXMLLoader loader = new FXMLLoader(rentalCarsStageResource.getURL());
+        loader.setController(new RentalCarsStageController());
+        Scene scene = new Scene(loader.load());
+        newWindow.setScene(scene);
+        newWindow.show();
     }
 
     public void rentCar(Car car, BigDecimal price, LocalDate rentalDate, LocalDate returnDate) {
@@ -143,52 +164,7 @@ public class ChartController {
                 });
     }
 
-
-//    public void setBackgroundImageView(){
-//        String currentPath = Paths.get(".").toAbsolutePath().normalize().toString();
-//        String backroundImagePath = currentPath + "\\mountains.jpg";
-//
-//        Image backgroundImage = new Image(backroundImagePath, backgroundImageView.getFitWidth(),
-//                backgroundImageView.getFitHeight(), false, false);
-//
-//
-//        backgroundImageView.setImage(backgroundImage);
-//        backgroundImageView.setOpacity(0.7);
-//
-//    }
-
-
-    public void setPriceRangeSlider() {
-        priceRangeSlider.setMin(0);
-        priceRangeSlider.setMax(Integer.parseInt(maxPrice));
-        priceRangeSlider.setValue(Integer.parseInt(defaultPrice));
-
-        priceRangeFromTextField.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue.matches("\\d*")) {
-                priceRangeFromTextField.setText(oldValue);
-            } else if (!newValue.isEmpty()) {
-                double value = Double.parseDouble(newValue);
-                priceRangeSlider.setValue(value);
-            }
-        });
-
-        priceRangeToTextField.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue.matches("\\d*")) {
-                priceRangeToTextField.setText(oldValue);
-            } else if (!newValue.isEmpty()) {
-                double value = Double.parseDouble(newValue);
-                priceRangeSlider.setMax(value);
-            }
-        });
-
-        priceRangeSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
-            double value = newValue.doubleValue();
-            priceRangeFromTextField.setText(Double.toString(value));
-            priceRangeToTextField.setText(Double.toString(priceRangeSlider.getMax()));
-        });
-    }
-
-    public void setDefaultCarMakes() {
+     public void setDefaultCarMakes() {
 
         List<String> carMakes = carService.getAllCarMakes().stream()
                 .map(CarMakeDto::getName)
@@ -300,24 +276,4 @@ public class ChartController {
         carDescriptionColumn.setCellValueFactory((new PropertyValueFactory<>("description")));
         tableView.setFixedCellSize(150);
     }
-
-//    public void setBackgroundLabel(){
-//        backgroundLabel.setText("Car Rental Service");
-//        backgroundLabel.setFont(new Font("Brush Script MT", 80));
-//        backgroundLabel.setTextFill(Color.web("#0076a3"));
-//
-//        backgroundLabel.setAlignment(Pos.CENTER);
-//
-//        DropShadow dropShadow = new DropShadow();
-//        dropShadow.setOffsetX(5);
-//        dropShadow.setOffsetY(5);
-//        dropShadow.setColor(Color.GRAY);
-//        backgroundLabel.setEffect(dropShadow);
-//
-//        Reflection reflection = new Reflection();
-//        reflection.setFraction(0.8);
-//        backgroundLabel.setEffect(reflection);
-//
-//        backgroundLabel.setStyle("-fx-background-color: transparent; -fx-border-color: transparent; -fx-padding: 10px;");
-//    }
 }

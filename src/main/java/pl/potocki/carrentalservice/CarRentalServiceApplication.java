@@ -11,5 +11,4 @@ public class CarRentalServiceApplication {
     public static void main(String[] args) {
         Application.launch(ChartApplication.class, args);
     }
-
 }

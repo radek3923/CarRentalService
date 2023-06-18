@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.ScrollBar?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="561.0" prefWidth="987.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="566.0" prefWidth="948.0">
+         <children>
+            <SplitPane fx:id="rentalCarsSplitPane" layoutX="-2.0" orientation="VERTICAL" prefHeight="561.0" prefWidth="974.0">
+               <items>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="589.0" prefWidth="766.0">
+                     <children>
+                        <TableView fx:id="carDataTableView" layoutX="1.0" prefHeight="558.0" prefWidth="980.0" styleClass="mytableview">
+                           <columns>
+                              <TableColumn fx:id="carMakeColumn" prefWidth="116.0" text="Make" />
+                              <TableColumn fx:id="carModelColumn" prefWidth="129.0" text="Model" />
+                              <TableColumn fx:id="carYearColumn" minWidth="0.0" prefWidth="49.0" text="Year" />
+                              <TableColumn fx:id="carDescriptionColumn" prefWidth="368.0" text="Description" />
+                              <TableColumn fx:id="carRentalDateColumn" prefWidth="110.0" text="Rental date" />
+                              <TableColumn fx:id="carReturnDateColumn" prefWidth="125.0" text="Return date" />
+                              <TableColumn fx:id="carPriceColumn" prefWidth="74.0" text="Price" />
+                           </columns>
+                        </TableView>
+                     </children>
+                  </AnchorPane>
+               </items>
+            </SplitPane>
+            <ScrollBar fx:id="scroll" layoutX="971.0" orientation="VERTICAL" prefHeight="561.0" prefWidth="16.0" />
+         </children>
+      </AnchorPane>
+   </children>
+</VBox>
