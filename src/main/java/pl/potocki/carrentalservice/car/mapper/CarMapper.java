@@ -9,9 +9,11 @@ import pl.potocki.carrentalservice.car.model.dto.CarTrimDto;
 @Component
 public class CarMapper extends ObjectMapper {
     public Car toCar(CarTrimDto carTrimDto) {
-        return new Car(carTrimDto.getCarMakeModelDto().getCarMakeDto().getName(),
-                carTrimDto.getCarMakeModelDto().getName(),
-                carTrimDto.getYear(),
-                carTrimDto.getDescription());
+        return Car.builder()
+                .carMake(carTrimDto.getCarMakeModelDto().getCarMakeDto().getName())
+                .carModel(carTrimDto.getCarMakeModelDto().getName())
+                .year(carTrimDto.getYear())
+                .description(carTrimDto.getDescription())
+                .build();
     }
 }

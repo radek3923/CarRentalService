@@ -1,31 +1,33 @@
 package pl.potocki.carrentalservice.carRental.model;
 
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 import pl.potocki.carrentalservice.car.model.Car;
 
-import java.time.LocalDateTime;
+import java.math.BigDecimal;
+import java.time.LocalDate;
 
 @Entity
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Data
+@Builder
 public class CarRental {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long rental_id;
 
+    @Cascade(CascadeType.ALL)
     @ManyToOne
     private Car car;
 
-    private int price;
+    private BigDecimal price;
 
-    private LocalDateTime rentalDate;
+    private LocalDate rentalDate;
 
-    private LocalDateTime returnDate;
+    private LocalDate returnDate;
 }

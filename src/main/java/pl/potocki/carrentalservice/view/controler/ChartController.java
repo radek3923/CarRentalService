@@ -17,7 +17,10 @@ import pl.potocki.carrentalservice.car.model.CarImage;
 import pl.potocki.carrentalservice.car.model.dto.CarMakeDto;
 import pl.potocki.carrentalservice.car.model.dto.CarModelDto;
 import pl.potocki.carrentalservice.car.service.CarService;
+import pl.potocki.carrentalservice.carRental.model.CarRental;
+import pl.potocki.carrentalservice.carRental.service.CarRentalService;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -29,6 +32,7 @@ import java.util.stream.Collectors;
 public class ChartController {
 
     private final CarService carService;
+    private final CarRentalService carRentalService;
     private final String defaultPrice = "100";
     private final String maxPrice = "1000";
 
@@ -97,7 +101,7 @@ public class ChartController {
                 .addListener((observableValue, oldValue, newValue) -> {
                     if (newValue != null) {
                         Car currentCar = carDataTableView.getSelectionModel().getSelectedItem();
-                        rentCar(currentCar, dateFromDatePicker.getValue(), dateToDatePicker.getValue());
+                        rentCar(currentCar, new BigDecimal(100), dateFromDatePicker.getValue(), dateToDatePicker.getValue());
 
                         int selectedIndex = carDataTableView.getSelectionModel().getSelectedIndex();
                         carImagesTableView.getSelectionModel().clearAndSelect(selectedIndex);
@@ -118,12 +122,24 @@ public class ChartController {
         carDataTableView.addEventFilter(ScrollEvent.ANY, Event::consume);
     }
 
-    public void rentCar(Car currentCar, LocalDate dateFromDatePicker, LocalDate dateToDatePicker) {
+    public void rentCar(Car car, BigDecimal price, LocalDate rentalDate, LocalDate returnDate) {
         rentCarButton.setOnMouseClicked(
                 mouseEvent -> {
-                    System.out.println(currentCar);
-                    System.out.println(dateFromDatePicker);
-                    System.out.println(dateToDatePicker);
+                    System.out.println(car);
+                    System.out.println(rentalDate);
+                    System.out.println(returnDate);
+                    CarRental carRental = CarRental.builder()
+                            .car(car)
+                            .price(price)
+                            .rentalDate(rentalDate)
+                            .returnDate(returnDate)
+                            .build();
+
+                    if (carRentalService.addCarRental(carRental) != null) {
+                        log.info("Successfully added car rental");
+                    } else {
+                        log.info("Unsuccessfully added car rental");
+                    }
                 });
     }
 
