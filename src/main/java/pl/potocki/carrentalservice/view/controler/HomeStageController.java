@@ -29,6 +29,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 
@@ -56,6 +57,8 @@ public class HomeStageController {
     public Button seeRentalCarsButton;
     @FXML
     public Button rentCarButton;
+    @FXML
+    public Button seeCarDetailsButton;
     @FXML
     public TextField priceRangeFromTextField;
     @FXML
@@ -114,6 +117,10 @@ public class HomeStageController {
                         throw new RuntimeException(e);
                     }
                 }
+        );
+
+        seeCarDetailsButton.setOnAction(
+                actionEvent -> System.out.println(carService.getAvailablePaintCombinations(carMakesComboBox.getValue(), carModelsComboBox.getValue()))
         );
 
         carDataTableView.getSelectionModel().selectedItemProperty()
@@ -208,17 +215,14 @@ public class HomeStageController {
         String carMake = carMakesComboBox.getSelectionModel().getSelectedItem();
         String carModel = carModelsComboBox.getSelectionModel().getSelectedItem();
         List<Car> cars = carService.getAllCarTrims(carMake, carModel);
-
-        for (Car car : cars) {
-            System.out.println(car.toString());
-        }
+        List<String> carPaintIds = carService.getAvailablePaintCombinations(carMake, carModel);
 
         ObservableList<Car> data = FXCollections.observableList(cars);
         setColumnForCarTableView(carDataTableView);
         wrapEachColumnsFromCarTableView();
 
         carDataTableView.setItems(data);
-        setCarImagesTableView(cars);
+        setCarImagesTableView(cars, carPaintIds);
         scroll.setMax(data.size());
     }
 
@@ -231,8 +235,8 @@ public class HomeStageController {
         });
     }
 
-    public void setCarImagesTableView(List<Car> cars) {
-        List<CarImage> imagesFromCars = getCarImages(cars);
+    public void setCarImagesTableView(List<Car> cars, List<String> carPaintIds) {
+        List<CarImage> imagesFromCars = getCarImages(cars, carPaintIds);
         ObservableList<CarImage> carImages = FXCollections.observableList(imagesFromCars);
 
         carImagesColumn.setCellValueFactory((new PropertyValueFactory<>("image")));
@@ -240,10 +244,15 @@ public class HomeStageController {
         carImagesTableView.setItems(carImages);
     }
 
-    public List<CarImage> getCarImages(List<Car> cars) {
+
+    public List<CarImage> getCarImages(List<Car> cars, List<String> carPaintIds) {
+        Random rand = new Random();
+        int size = carPaintIds.size();
+
         return cars.stream()
                 .map(c -> {
-                    ImageView imageView = new ImageView(carService.getCarImage(c.getCarMake(), c.getCarModel()));
+                    String paintId = carPaintIds.isEmpty() ? "" : carPaintIds.get(rand.nextInt(size));
+                    ImageView imageView = new ImageView(carService.getCarImage(c.getCarMake(), c.getCarModel(), paintId));
                     imageView.setFitHeight(180);
                     imageView.maxHeight(180);
                     imageView.setFitWidth(300);

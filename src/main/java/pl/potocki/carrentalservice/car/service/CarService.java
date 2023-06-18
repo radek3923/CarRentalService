@@ -1,8 +1,8 @@
 package pl.potocki.carrentalservice.car.service;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import javafx.scene.image.ImageView;
 import javafx.scene.image.Image;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
@@ -18,26 +18,30 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Random;
 
 @Service
 @AllArgsConstructor
 public class CarService {
     private final CarMapper carMapper = new CarMapper();
-    private final String carApiUrl = "https://carapi.app";
-    private final String imaginStudioUrl = "https://cdn.imagin.studio/getImage?&customer=plpretius";
+    private final String getCarDataApi = "https://carapi.app";
+    private final String getCarImagesApiUrl = "https://cdn.imagin.studio/getImage?&customer=plpretius";
+    private final String getCarPaintCombinationsApiUrl = "https://cdn.imagin.studio/getPaints?&customer=plpretius&target=car";
     private final String YEAR = "2020";
 
     @SneakyThrows
     public List<CarMakeDto> getAllCarMakes() {
-        CarDataDto carDataDto = carMapper.readValue(new URL(carApiUrl + "/api/makes?year=" + YEAR), CarDataDto.class);
+        CarDataDto carDataDto = carMapper.readValue(new URL(getCarDataApi + "/api/makes?year=" + YEAR), CarDataDto.class);
         return carMapper.convertValue(carDataDto.getCarData(), new TypeReference<List<CarMakeDto>>() {
         });
     }
 
     @SneakyThrows
     public List<CarModelDto> getAllCarModels(String carMake) {
-        URL url = new URL(carApiUrl + "/api/models?year=" + YEAR + "&make=" + carMake);
+        URL url = new URL(getCarDataApi + "/api/models?year=" + YEAR + "&make=" + carMake);
         CarDataDto carDataDto = carMapper.readValue(url, CarDataDto.class);
         return carMapper.convertValue(carDataDto.getCarData(), new TypeReference<List<CarModelDto>>() {
         });
@@ -45,7 +49,7 @@ public class CarService {
 
     @SneakyThrows
     public List<Car> getAllCarTrims(String carMake, String carModel) {
-        URL url = new URL(carApiUrl + "/api/trims?verbose=yes&year=" + YEAR + "&make=" + carMake + "&model=" + carModel);
+        URL url = new URL(getCarDataApi + "/api/trims?verbose=yes&year=" + YEAR + "&make=" + carMake + "&model=" + carModel);
         CarDataDto carDataDto = carMapper.readValue(url, CarDataDto.class);
 
         List<CarTrimDto> carTrimDtoList = carMapper.convertValue(carDataDto.getCarData(), new TypeReference<List<CarTrimDto>>() {
@@ -54,13 +58,36 @@ public class CarService {
         return carTrimDtoList.stream()
                 .map(carMapper::toCar)
                 .toList();
+
     }
 
     @SneakyThrows
-    public Image getCarImage(String carMake, String carModel) {
-        String imageUrl =  imaginStudioUrl + "&make=" + carMake + "&modelFamily=" + carModel;
+    public Image getCarImage(String carMake, String carModel, String paintId) {
+        String imageUrl =  getCarImagesApiUrl + "&zoomType=fullscreen&make=" + carMake + "&modelFamily=" + carModel + "&paintId=" + paintId;
         BufferedImage bufferedImage = downloadImageFromURL(imageUrl);
         return convertBufferedImageToImage(bufferedImage);
+    }
+
+    @SneakyThrows
+    public List<String> getAvailablePaintCombinations(String carMake, String carModel) {
+        URL url = new URL(getCarPaintCombinationsApiUrl + "&make=" + carMake + "&modelFamily=" + carModel);
+        List<String> availablePaintCombinations = new ArrayList<>();
+
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode rootNode = mapper.readTree(url);
+
+        JsonNode paintCombinationsNode = rootNode.path("paintData").path("paintCombinations");
+        Iterator<String> fieldNames = paintCombinationsNode.fieldNames();
+
+        while (fieldNames.hasNext()) {
+            String paintCombinationKey = fieldNames.next();
+            JsonNode paintCombinationNode = paintCombinationsNode.path(paintCombinationKey);
+            boolean isAvailable = paintCombinationNode.path("mapped").elements().next().path("available").asBoolean();
+            if (isAvailable) {
+                availablePaintCombinations.add(paintCombinationKey);
+            }
+        }
+        return availablePaintCombinations;
     }
 
     private BufferedImage downloadImageFromURL(String imageUrl) throws IOException {

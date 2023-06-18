@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+
+<AnchorPane prefHeight="599.0" prefWidth="835.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="stages.CarDetailsStage">
+   <children>
+      <ImageView fitHeight="360.0" fitWidth="522.0" layoutX="157.0" layoutY="120.0" pickOnBounds="true" preserveRatio="true" />
+   </children>
+</AnchorPane>

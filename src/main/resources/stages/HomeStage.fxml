@@ -107,7 +107,7 @@
                            <children>
                               <ButtonBar layoutY="66.0" prefHeight="64.0" prefWidth="921.0">
                                 <buttons>
-                                    <Button mnemonicParsing="false" text="See Details" />
+                                    <Button fx:id="seeCarDetailsButton" mnemonicParsing="false" text="See Details" />
                                   <Button fx:id="rentCarButton" mnemonicParsing="false" text="Rent Car" />
                                     <Button mnemonicParsing="false" text="&gt;" />
                                     <Button fx:id="seeRentalCarsButton" minWidth="72.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="238.0" text="See all rental cars" />
