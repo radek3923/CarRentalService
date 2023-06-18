@@ -1,14 +1,11 @@
 package pl.potocki.carrentalservice.view.controler;
 
-import com.luciad.imageio.webp.WebPReadParam;
-import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import net.coobird.thumbnailator.tasks.io.URLImageSource;
 import org.springframework.stereotype.Component;
 import pl.potocki.carrentalservice.car.model.Car;
 import pl.potocki.carrentalservice.car.model.dto.CarMakeDto;
@@ -17,12 +14,8 @@ import pl.potocki.carrentalservice.car.model.dto.CarTrimDto;
 import pl.potocki.carrentalservice.car.service.CarService;
 
 import javax.imageio.ImageIO;
-import javax.imageio.ImageReader;
-import javax.imageio.stream.FileImageInputStream;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.List;
@@ -85,32 +78,6 @@ public class ChartController {
 
     @FXML
     public void initialize() throws IOException {
-
-//        String urlAsWebp = "https://apartamentyzakopane.pl/blog/wp-content/uploads/2020/11/20120821_IMG_7221.jpg";
-//
-//        String urlAsWebp = "https://cdn.imagin.studio/getImage?&customer=plpretius&make=BMW&modelFamily=4 Series";
-//
-//
-//        URL url = new URL(urlAsWebp);
-//
-//        String inputWebpPath = "test_pic/car.webp";
-//        String outputJpgPath = "test_pic/car.jpg";
-//
-//        // Obtain a WebP ImageReader instance
-//        ImageReader reader = ImageIO.getImageReadersByMIMEType("image/webp").next();
-//
-//        // Configure decoding parameters
-//        WebPReadParam readParam = new WebPReadParam();
-//        readParam.setBypassFiltering(true);
-//
-//        // Configure the input on the ImageReader
-//        reader.setInput(new FileImageInputStream(new File(inputWebpPath)));
-//
-//        // Decode the image
-//        BufferedImage image = reader.read(0, readParam);
-//
-//        ImageIO.write(image, "jpg", new File(outputJpgPath));
-
         String imageUrl = "https://cdn.imagin.studio/getImage?&customer=plpretius&make=BMW&modelFamily=4 Series";
 
         // Pobierz obraz z podanego URL
