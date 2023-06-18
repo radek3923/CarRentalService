@@ -1,12 +1,9 @@
 package pl.potocki.carrentalservice.view.controler;
 
 import javafx.collections.FXCollections;
-import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.fxml.FXML;
-import javafx.geometry.Orientation;
-import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
@@ -39,6 +36,10 @@ public class ChartController {
     public Button searchButton;
     @FXML
     public Button clearButton;
+    @FXML
+    public Button seeRentalCarsButton;
+    @FXML
+    public Button rentCarButton;
     @FXML
     public TextField priceRangeFromTextField;
     @FXML
@@ -92,12 +93,38 @@ public class ChartController {
                 actionEvent -> clearSearchingOptionsButtonAction()
         );
 
+        carDataTableView.getSelectionModel().selectedItemProperty()
+                .addListener((observableValue, oldValue, newValue) -> {
+                    if (newValue != null) {
+                        Car currentCar = carDataTableView.getSelectionModel().getSelectedItem();
+                        rentCar(currentCar, dateFromDatePicker.getValue(), dateToDatePicker.getValue());
+
+                        int selectedIndex = carDataTableView.getSelectionModel().getSelectedIndex();
+                        carImagesTableView.getSelectionModel().clearAndSelect(selectedIndex);
+                    }
+                });
+
+        carImagesTableView.getSelectionModel().selectedIndexProperty()
+                .addListener((observableValue, oldValue, newValue) -> {
+                    carDataTableView.getSelectionModel().clearAndSelect(newValue.intValue());
+                });
+
+
         setPriceRangeSlider();
         setDefaultCarMakes();
         setScrollBar(carDataTableView);
 
         carImagesTableView.addEventFilter(ScrollEvent.ANY, Event::consume);
         carDataTableView.addEventFilter(ScrollEvent.ANY, Event::consume);
+    }
+
+    public void rentCar(Car currentCar, LocalDate dateFromDatePicker, LocalDate dateToDatePicker) {
+        rentCarButton.setOnMouseClicked(
+                mouseEvent -> {
+                    System.out.println(currentCar);
+                    System.out.println(dateFromDatePicker);
+                    System.out.println(dateToDatePicker);
+                });
     }
 
 
