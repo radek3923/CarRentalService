@@ -2,7 +2,6 @@ package pl.potocki.carrentalservice.view.controler;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -10,13 +9,8 @@ import org.springframework.stereotype.Component;
 import pl.potocki.carrentalservice.car.model.Car;
 import pl.potocki.carrentalservice.car.model.dto.CarMakeDto;
 import pl.potocki.carrentalservice.car.model.dto.CarModelDto;
-import pl.potocki.carrentalservice.car.model.dto.CarTrimDto;
 import pl.potocki.carrentalservice.car.service.CarService;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.net.URL;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -56,22 +50,14 @@ public class ChartController {
     @FXML
     public TableView<Car> carTableView;
     @FXML
-    public TableColumn<?, ImageView> carColumn1;
-
-
-    //    @FXML
-//    public TableColumn<> carColumn2;
-//
-//    @FXML
-//    public TableColumn carColumn3;
-//
-//    @FXML
-//    public TableColumn carColumn4;
-//
+    public TableColumn<?, ImageView> carImagesColumn;
     @FXML
-    public ImageView backgroundImageView;
-//    @FXML
-//    public Label backgroundLabel;
+    public TableColumn<?, String> carMakeColumn;
+    @FXML
+    public TableColumn<?, String> carModelColumn;
+    @FXML
+    public TableColumn<?, String> CarDescriptionColumn;
+
 
     @FXML
     ImageView carViewTest;
@@ -112,7 +98,6 @@ public class ChartController {
 //        backgroundImageView.setOpacity(0.7);
 //
 //    }
-
 
 
     public void setPriceRangeSlider() {
@@ -187,14 +172,34 @@ public class ChartController {
 
 
     public void searchCarsButtonAction() {
-//        System.out.println(dateFromDatePicker.getValue());
-//        System.out.println(dateToDatePicker.getValue());
+        String carMake = carMakesComboBox.getSelectionModel().getSelectedItem();
+        String carModel = carModelsComboBox.getSelectionModel().getSelectedItem();
+        List<Car> cars = carService.getAllCarTrims(carMake, carModel);
 
-
-        for (CarTrimDto carMakeDto : carService.getAllCarTrims("BMW", "")) {
-            System.out.println(carMakeDto.toString());
+        for(Car car: cars){
+            System.out.println(car.toString());
         }
+//        ObservableList<Movie> data = FXCollections.observableList(movies);
     }
+
+//    public static List<ImagePoster> getImagePosters(List<? extends Movie> favouriteMovies) {
+//        return favouriteMovies.stream()
+//                .map(Movie::getPoster)
+//                .map(s -> {
+//                    ImageView imageView = new ImageView(s);
+//                    imageView.setFitHeight(150);
+//                    imageView.maxHeight(150);
+//                    imageView.setFitWidth(180);
+//                    return new ImagePoster(imageView);
+//                })
+//                .collect(Collectors.toList());
+//    }
+
+//    public void setTableViewForImagePoster() {
+//        carImagesColumn.setCellValueFactory((new PropertyValueFactory<>("image")));
+//        carImagesColumn.setFixedCellSize(155);
+//        carImagesColumn.set
+//    }
 
 //    public void setBackgroundLabel(){
 //        backgroundLabel.setText("Car Rental Service");

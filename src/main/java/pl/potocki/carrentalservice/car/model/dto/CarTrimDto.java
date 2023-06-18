@@ -13,6 +13,9 @@ public class CarTrimDto {
     @JsonProperty("description")
     private String description;
 
+    @JsonProperty("year")
+    private int year;
+
     @JsonProperty("make_model")
     private CarMakeModelDto carMakeModelDto;
 }
