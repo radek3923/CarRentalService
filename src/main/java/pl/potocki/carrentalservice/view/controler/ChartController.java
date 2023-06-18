@@ -77,19 +77,7 @@ public class ChartController {
     ImageView carViewTest;
 
     @FXML
-    public void initialize() throws IOException {
-        String imageUrl = "https://cdn.imagin.studio/getImage?&customer=plpretius&make=BMW&modelFamily=4 Series";
-
-        // Pobierz obraz z podanego URL
-        BufferedImage bufferedImage = downloadImageFromURL(imageUrl);
-
-        // Konwertuj BufferedImage na Image
-        Image image = convertBufferedImageToImage(bufferedImage);
-
-        carViewTest.setImage(image);
-        System.out.println("Testowa wiadomość");
-
-
+    public void initialize() {
         searchButton.setText("Search");
         priceRangeFromTextField.setText(defaultPrice);
         priceRangeToTextField.setText(maxPrice);
@@ -111,14 +99,7 @@ public class ChartController {
         setDefaultCarMakes();
     }
 
-    private BufferedImage downloadImageFromURL(String imageUrl) throws IOException {
-        URL url = new URL(imageUrl);
-        return ImageIO.read(url);
-    }
 
-    private Image convertBufferedImageToImage(BufferedImage bufferedImage) {
-        return javafx.embed.swing.SwingFXUtils.toFXImage(bufferedImage, null);
-    }
 //    public void setBackgroundImageView(){
 //        String currentPath = Paths.get(".").toAbsolutePath().normalize().toString();
 //        String backroundImagePath = currentPath + "\\mountains.jpg";
@@ -194,6 +175,8 @@ public class ChartController {
         log.info("Added car models to comboBox: {}", carModels);
 
         carModelsComboBox.getSelectionModel().select(1);
+
+        carViewTest.setImage(carService.getCarImage(carMakesComboBox.getSelectionModel().getSelectedItem(), carModelsComboBox.getSelectionModel().getSelectedItem()));
     }
 
     public void clearSearchingOptionsButtonAction() {

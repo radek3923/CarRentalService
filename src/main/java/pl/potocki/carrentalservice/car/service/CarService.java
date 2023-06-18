@@ -12,6 +12,9 @@ import pl.potocki.carrentalservice.car.model.dto.CarMakeDto;
 import pl.potocki.carrentalservice.car.model.dto.CarModelDto;
 import pl.potocki.carrentalservice.car.model.dto.CarTrimDto;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 
@@ -47,14 +50,18 @@ public class CarService {
     }
 
     @SneakyThrows
-    public ImageView getCarImage(String carMake, String carModel) {
-//        URL url = new URL(imaginStudioUrl + "&make=" + carMake + "&model=" + carModel);
-//        String url = imaginStudioUrl + "&make=" + carMake + "&model=" + carModel;
-        String url = "https://apartamentyzakopane.pl/blog/wp-content/uploads/2020/11/20120821_IMG_7221.jpg";
-        Image image = new Image(url);
-        ImageView imageView = new ImageView(image);
+    public Image getCarImage(String carMake, String carModel) {
+        String imageUrl = "https://cdn.imagin.studio/getImage?&customer=plpretius&make=" + carMake + "&modelFamily=" + carModel;
+        BufferedImage bufferedImage = downloadImageFromURL(imageUrl);
+        return convertBufferedImageToImage(bufferedImage);
+    }
 
+    private BufferedImage downloadImageFromURL(String imageUrl) throws IOException {
+        URL url = new URL(imageUrl);
+        return ImageIO.read(url);
+    }
 
-        return imageView;
+    private Image convertBufferedImageToImage(BufferedImage bufferedImage) {
+        return javafx.embed.swing.SwingFXUtils.toFXImage(bufferedImage, null);
     }
 }
