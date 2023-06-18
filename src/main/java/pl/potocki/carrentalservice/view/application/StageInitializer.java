@@ -18,7 +18,7 @@ public class StageInitializer implements ApplicationListener<ChartApplication.St
     private final String applicationTitle;
     private ApplicationContext applicationContext;
 
-    public StageInitializer(@Value("${spring.application.ui.title}") String applicationTitle,
+    public StageInitializer(@Value("${spring.application.ui.homeStage.title}") String applicationTitle,
                             ApplicationContext applicationContext) {
         this.applicationTitle = applicationTitle;
         this.applicationContext = applicationContext;

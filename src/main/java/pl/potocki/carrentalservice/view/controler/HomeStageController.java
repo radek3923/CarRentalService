@@ -45,6 +45,9 @@ public class HomeStageController {
 
     @Value("classpath:/stages/RentalCarsStage.fxml")
     private Resource rentalCarsStageResource;
+
+    @Value("${spring.application.ui.rentalCarsStage.title}")
+    private String rentalCarsStageTitle;
     @FXML
     public Button searchButton;
     @FXML
@@ -142,6 +145,7 @@ public class HomeStageController {
         loader.setController(new RentalCarsStageController(carRentalService));
         Scene scene = new Scene(loader.load());
         newWindow.setScene(scene);
+        newWindow.setTitle(rentalCarsStageTitle);
         newWindow.show();
     }
 
@@ -163,7 +167,6 @@ public class HomeStageController {
     }
 
     public void setDefaultCarMakes() {
-
         List<String> carMakes = carService.getAllCarMakes().stream()
                 .map(CarMakeDto::getName)
                 .collect(Collectors.toList());
@@ -274,9 +277,4 @@ public class HomeStageController {
         carDescriptionColumn.setCellValueFactory((new PropertyValueFactory<>("description")));
         tableView.setFixedCellSize(150);
     }
-
-    public void setInfoLabel(String info) {
-        infoLabel.setText(info);
-    }
-
 }

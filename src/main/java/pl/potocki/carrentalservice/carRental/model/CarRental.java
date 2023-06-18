@@ -19,7 +19,7 @@ public class CarRental {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long rental_id;
+    private Long rentalId;
 
     @Cascade(CascadeType.ALL)
     @ManyToOne

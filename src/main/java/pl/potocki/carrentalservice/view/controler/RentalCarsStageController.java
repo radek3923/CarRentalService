@@ -30,6 +30,8 @@ public class RentalCarsStageController implements Initializable {
     @FXML
     public TableView<CarRental> carDataTableView = new TableView<>();
     @FXML
+    public TableColumn<CarRental, Long> carRentalIdColumn;
+    @FXML
     public TableColumn<CarRental, String> carMakeColumn;
     @FXML
     public TableColumn<CarRental, String> carModelColumn;
@@ -52,6 +54,7 @@ public class RentalCarsStageController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         showCarRentalHistory();
+        setScrollBar(carDataTableView);
     }
 
     public void showCarRentalHistory() {
@@ -68,7 +71,7 @@ public class RentalCarsStageController implements Initializable {
     }
 
     private void setColumnForCarTableView(TableView<CarRental> tableView) {
-
+        carRentalIdColumn.setCellValueFactory(new PropertyValueFactory<>("rentalId"));
         carMakeColumn.setCellValueFactory(cellData ->
                 new SimpleStringProperty(cellData.getValue().getCar().getCarMake()));
         carModelColumn.setCellValueFactory(cellData ->
@@ -98,6 +101,14 @@ public class RentalCarsStageController implements Initializable {
             text.wrappingWidthProperty().bind(tableColumn.widthProperty());
             text.textProperty().bind(cell.itemProperty());
             return cell;
+        });
+    }
+
+    public void setScrollBar(TableView<?> tableView) {
+        scroll.setMax(tableView.getItems().size());
+        scroll.setMin(0);
+        scroll.valueProperty().addListener((observableValue, number, t1) -> {
+            tableView.scrollTo(t1.intValue());
         });
     }
 }
