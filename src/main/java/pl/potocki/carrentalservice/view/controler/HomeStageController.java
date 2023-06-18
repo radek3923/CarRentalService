@@ -58,6 +58,8 @@ public class HomeStageController {
     @FXML
     public TextField priceRangeToTextField;
     @FXML
+    public Label infoLabel;
+    @FXML
     protected ScrollBar scroll;
 
     @FXML
@@ -156,15 +158,11 @@ public class HomeStageController {
                             .returnDate(returnDate)
                             .build();
 
-                    if (carRentalService.addCarRental(carRental) != null) {
-                        log.info("Successfully added car rental");
-                    } else {
-                        log.info("Unsuccessfully added car rental");
-                    }
+                    infoLabel.setText(carRentalService.addCarRental(carRental));
                 });
     }
 
-     public void setDefaultCarMakes() {
+    public void setDefaultCarMakes() {
 
         List<String> carMakes = carService.getAllCarMakes().stream()
                 .map(CarMakeDto::getName)
@@ -230,7 +228,7 @@ public class HomeStageController {
         });
     }
 
-    private void setCarImagesTableView(List<Car> cars) {
+    public void setCarImagesTableView(List<Car> cars) {
         List<CarImage> imagesFromCars = getCarImages(cars);
         ObservableList<CarImage> carImages = FXCollections.observableList(imagesFromCars);
 
@@ -239,7 +237,7 @@ public class HomeStageController {
         carImagesTableView.setItems(carImages);
     }
 
-    private List<CarImage> getCarImages(List<Car> cars) {
+    public List<CarImage> getCarImages(List<Car> cars) {
         return cars.stream()
                 .map(c -> {
                     ImageView imageView = new ImageView(carService.getCarImage(c.getCarMake(), c.getCarModel()));
@@ -251,7 +249,7 @@ public class HomeStageController {
                 .toList();
     }
 
-    private void wrapEachColumnsFromCarTableView() {
+    public void wrapEachColumnsFromCarTableView() {
         wrapTextForTableColumn(carMakeColumn);
         wrapTextForTableColumn(carModelColumn);
         wrapTextForTableColumn(carDescriptionColumn);
@@ -269,11 +267,16 @@ public class HomeStageController {
         });
     }
 
-    private void setColumnForCarTableView(TableView<?> tableView) {
+    public void setColumnForCarTableView(TableView<?> tableView) {
         carMakeColumn.setCellValueFactory((new PropertyValueFactory<>("carMake")));
         carModelColumn.setCellValueFactory((new PropertyValueFactory<>("carModel")));
         carYearColumn.setCellValueFactory((new PropertyValueFactory<>("year")));
         carDescriptionColumn.setCellValueFactory((new PropertyValueFactory<>("description")));
         tableView.setFixedCellSize(150);
     }
+
+    public void setInfoLabel(String info) {
+        infoLabel.setText(info);
+    }
+
 }

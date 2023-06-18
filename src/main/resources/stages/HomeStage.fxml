@@ -85,7 +85,7 @@
             </AnchorPane>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="598.0" prefWidth="586.0">
                <children>
-                  <SplitPane dividerPositions="0.9110225763612217" layoutX="-2.0" orientation="VERTICAL" prefHeight="755.0" prefWidth="936.0">
+                  <SplitPane dividerPositions="0.8207171314741036" layoutX="-2.0" orientation="VERTICAL" prefHeight="755.0" prefWidth="936.0">
                     <items>
                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="158.0" prefWidth="561.0">
                            <children>
@@ -105,7 +105,7 @@
                            </children></AnchorPane>
                         <AnchorPane prefHeight="51.0" prefWidth="934.0">
                            <children>
-                              <ButtonBar layoutX="-2.0" prefHeight="64.0" prefWidth="921.0">
+                              <ButtonBar layoutY="66.0" prefHeight="64.0" prefWidth="921.0">
                                 <buttons>
                                     <Button mnemonicParsing="false" text="See Details" />
                                   <Button fx:id="rentCarButton" mnemonicParsing="false" text="Rent Car" />
@@ -113,6 +113,7 @@
                                     <Button fx:id="seeRentalCarsButton" minWidth="72.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="238.0" text="See all rental cars" />
                                 </buttons>
                               </ButtonBar>
+                              <Label fx:id="infoLabel" layoutX="112.0" layoutY="25.0" prefHeight="41.0" prefWidth="634.0" />
                            </children></AnchorPane>
                     </items>
                   </SplitPane>

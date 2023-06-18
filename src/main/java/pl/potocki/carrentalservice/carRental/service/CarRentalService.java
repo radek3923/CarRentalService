@@ -16,13 +16,21 @@ public class CarRentalService {
 
     private final CarRentalRepository carRentalRepository;
 
-    public Optional<CarRental> findCarRentalById(Long id){
+    public Optional<CarRental> findCarRentalById(Long id) {
         return carRentalRepository.findById(id);
     }
 
-    public CarRental addCarRental(CarRental carRental){
-        log.info("Adding car rental: {}", carRental);
-        return carRentalRepository.save(carRental);
+    public String addCarRental(CarRental carRental) {
+        if (carRentalRepository.findAll()
+                .stream()
+                .map(CarRental::getCar)
+                .noneMatch(e -> e.equals(carRental.getCar()))) {
+            carRentalRepository.save(carRental);
+            return "You have successfully rented" + carRental.getCar().getCarMake()
+                    + ", " + carRental.getCar().getCarModel() + ", "
+                    + carRental.getCar().getDescription();
+        }
+        return "This car is already rented";
     }
 
     public List<CarRental> findAll() {
