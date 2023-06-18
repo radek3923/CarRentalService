@@ -29,7 +29,6 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Random;
 import java.util.stream.Collectors;
 
 
@@ -120,6 +119,7 @@ public class HomeStageController {
         );
 
         seeCarDetailsButton.setOnAction(
+                //TODO add new stage
                 actionEvent -> System.out.println(carService.getAvailablePaintCombinations(carMakesComboBox.getValue(), carModelsComboBox.getValue()))
         );
 
@@ -215,14 +215,13 @@ public class HomeStageController {
         String carMake = carMakesComboBox.getSelectionModel().getSelectedItem();
         String carModel = carModelsComboBox.getSelectionModel().getSelectedItem();
         List<Car> cars = carService.getAllCarTrims(carMake, carModel);
-        List<String> carPaintIds = carService.getAvailablePaintCombinations(carMake, carModel);
 
         ObservableList<Car> data = FXCollections.observableList(cars);
         setColumnForCarTableView(carDataTableView);
         wrapEachColumnsFromCarTableView();
 
         carDataTableView.setItems(data);
-        setCarImagesTableView(cars, carPaintIds);
+        setCarImagesTableView(cars);
         scroll.setMax(data.size());
     }
 
@@ -235,8 +234,8 @@ public class HomeStageController {
         });
     }
 
-    public void setCarImagesTableView(List<Car> cars, List<String> carPaintIds) {
-        List<CarImage> imagesFromCars = getCarImages(cars, carPaintIds);
+    public void setCarImagesTableView(List<Car> cars) {
+        List<CarImage> imagesFromCars = getCarImages(cars);
         ObservableList<CarImage> carImages = FXCollections.observableList(imagesFromCars);
 
         carImagesColumn.setCellValueFactory((new PropertyValueFactory<>("image")));
@@ -245,14 +244,10 @@ public class HomeStageController {
     }
 
 
-    public List<CarImage> getCarImages(List<Car> cars, List<String> carPaintIds) {
-        Random rand = new Random();
-        int size = carPaintIds.size();
-
+    public List<CarImage> getCarImages(List<Car> cars) {
         return cars.stream()
                 .map(c -> {
-                    String paintId = carPaintIds.isEmpty() ? "" : carPaintIds.get(rand.nextInt(size));
-                    ImageView imageView = new ImageView(carService.getCarImage(c.getCarMake(), c.getCarModel(), paintId));
+                    ImageView imageView = new ImageView(carService.getCarImage(c.getCarMake(), c.getCarModel(), ""));
                     imageView.setFitHeight(180);
                     imageView.maxHeight(180);
                     imageView.setFitWidth(300);

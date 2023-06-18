@@ -63,7 +63,7 @@ public class CarService {
 
     @SneakyThrows
     public Image getCarImage(String carMake, String carModel, String paintId) {
-        String imageUrl =  getCarImagesApiUrl + "&zoomType=fullscreen&make=" + carMake + "&modelFamily=" + carModel + "&paintId=" + paintId;
+        String imageUrl = getCarImagesApiUrl + "&zoomType=fullscreen&make=" + carMake + "&modelFamily=" + carModel + "&paintId=" + paintId;
         BufferedImage bufferedImage = downloadImageFromURL(imageUrl);
         return convertBufferedImageToImage(bufferedImage);
     }
