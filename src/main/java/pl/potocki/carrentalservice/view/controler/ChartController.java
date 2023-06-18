@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import pl.potocki.carrentalservice.car.model.Car;
+import pl.potocki.carrentalservice.car.model.CarImage;
 import pl.potocki.carrentalservice.car.model.dto.CarMakeDto;
 import pl.potocki.carrentalservice.car.model.dto.CarModelDto;
 import pl.potocki.carrentalservice.car.service.CarService;
@@ -44,21 +45,24 @@ public class ChartController {
     public DatePicker dateFromDatePicker;
     @FXML
     public DatePicker dateToDatePicker;
-
     @FXML
     public ComboBox<String> carMakesComboBox;
-
     @FXML
     public ComboBox<String> carModelsComboBox;
 
     @FXML
-    public TableView<Car> carTableView;
+    public TableView<CarImage> carImagesTableView;
     @FXML
-    public TableColumn<?, ImageView> carImagesColumn;
+    public TableColumn<CarImage, ImageView> carImagesColumn;
+
+    @FXML
+    public TableView<Car> carDataTableView;
     @FXML
     public TableColumn<?, String> carMakeColumn;
     @FXML
     public TableColumn<?, String> carModelColumn;
+    @FXML
+    public TableColumn<?, String> carYearColumn;
     @FXML
     public TableColumn<?, String> carDescriptionColumn;
 
@@ -180,15 +184,37 @@ public class ChartController {
         String carModel = carModelsComboBox.getSelectionModel().getSelectedItem();
         List<Car> cars = carService.getAllCarTrims(carMake, carModel);
 
-        for(Car car: cars){
+        for (Car car : cars) {
             System.out.println(car.toString());
         }
 
         ObservableList<Car> data = FXCollections.observableList(cars);
-        setColumnForCarTableView(carTableView);
+        setColumnForCarTableView(carDataTableView);
         wrapEachColumnsFromCarTableView();
 
-        carTableView.setItems(data);
+        carDataTableView.setItems(data);
+        setCarImagesTableView(cars);
+    }
+
+    private void setCarImagesTableView(List<Car> cars) {
+        List<CarImage> imagesFromCars = getCarImages(cars);
+        ObservableList<CarImage> carImages = FXCollections.observableList(imagesFromCars);
+
+        carImagesColumn.setCellValueFactory((new PropertyValueFactory<>("image")));
+        carImagesTableView.setFixedCellSize(155);
+        carImagesTableView.setItems(carImages);
+    }
+
+    private List<CarImage> getCarImages(List<Car> cars) {
+        return cars.stream()
+                .map(c -> {
+                    ImageView imageView = new ImageView(carService.getCarImage(c.getCarMake(), c.getCarModel()));
+                    imageView.setFitHeight(150);
+                    imageView.maxHeight(150);
+                    imageView.setFitWidth(180);
+                    return new CarImage(imageView);
+                })
+                .toList();
     }
 
     private void wrapEachColumnsFromCarTableView() {
@@ -212,28 +238,10 @@ public class ChartController {
     private void setColumnForCarTableView(TableView<?> tableView) {
         carMakeColumn.setCellValueFactory((new PropertyValueFactory<>("carMake")));
         carModelColumn.setCellValueFactory((new PropertyValueFactory<>("carModel")));
+        carYearColumn.setCellValueFactory((new PropertyValueFactory<>("year")));
         carDescriptionColumn.setCellValueFactory((new PropertyValueFactory<>("description")));
-        tableView.setFixedCellSize(155);
+        tableView.setFixedCellSize(140);
     }
-
-//    public static List<ImagePoster> getImagePosters(List<? extends Movie> favouriteMovies) {
-//        return favouriteMovies.stream()
-//                .map(Movie::getPoster)
-//                .map(s -> {
-//                    ImageView imageView = new ImageView(s);
-//                    imageView.setFitHeight(150);
-//                    imageView.maxHeight(150);
-//                    imageView.setFitWidth(180);
-//                    return new ImagePoster(imageView);
-//                })
-//                .collect(Collectors.toList());
-//    }
-
-//    public void setTableViewForImagePoster() {
-//        carImagesColumn.setCellValueFactory((new PropertyValueFactory<>("image")));
-//        carImagesColumn.setFixedCellSize(155);
-//        carImagesColumn.set
-//    }
 
 //    public void setBackgroundLabel(){
 //        backgroundLabel.setText("Car Rental Service");
