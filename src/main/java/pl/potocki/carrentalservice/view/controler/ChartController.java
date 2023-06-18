@@ -211,17 +211,6 @@ public class ChartController {
         });
     }
 
-    private ScrollBar findScrollBar(TableView<?> tableView) {
-        ScrollBar scrollBar = null;
-        for (Node node : tableView.lookupAll(".scroll-bar")) {
-            if (node instanceof ScrollBar) {
-                scrollBar = (ScrollBar) node;
-                break;
-            }
-        }
-        return scrollBar;
-    }
-
     private void setCarImagesTableView(List<Car> cars) {
         List<CarImage> imagesFromCars = getCarImages(cars);
         ObservableList<CarImage> carImages = FXCollections.observableList(imagesFromCars);
