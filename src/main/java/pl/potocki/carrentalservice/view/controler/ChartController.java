@@ -1,11 +1,16 @@
 package pl.potocki.carrentalservice.view.controler;
 
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
+import javafx.event.Event;
 import javafx.fxml.FXML;
+import javafx.geometry.Orientation;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.ScrollEvent;
 import javafx.scene.text.Text;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -40,6 +45,8 @@ public class ChartController {
     public TextField priceRangeToTextField;
     @FXML
     public Slider priceRangeSlider;
+    @FXML
+    protected ScrollBar scroll;
 
     @FXML
     public DatePicker dateFromDatePicker;
@@ -56,7 +63,7 @@ public class ChartController {
     public TableColumn<CarImage, ImageView> carImagesColumn;
 
     @FXML
-    public TableView<Car> carDataTableView;
+    public TableView<Car> carDataTableView = new TableView<>();
     @FXML
     public TableColumn<?, String> carMakeColumn;
     @FXML
@@ -65,10 +72,6 @@ public class ChartController {
     public TableColumn<?, String> carYearColumn;
     @FXML
     public TableColumn<?, String> carDescriptionColumn;
-
-
-    @FXML
-    ImageView carViewTest;
 
     @FXML
     public void initialize() {
@@ -91,6 +94,10 @@ public class ChartController {
 
         setPriceRangeSlider();
         setDefaultCarMakes();
+        setScrollBar(carDataTableView);
+
+        carImagesTableView.addEventFilter(ScrollEvent.ANY, Event::consume);
+        carDataTableView.addEventFilter(ScrollEvent.ANY, Event::consume);
     }
 
 
@@ -168,8 +175,6 @@ public class ChartController {
         log.info("Added car models to comboBox: {}", carModels);
 
         carModelsComboBox.getSelectionModel().select(1);
-
-        carViewTest.setImage(carService.getCarImage(carMakesComboBox.getSelectionModel().getSelectedItem(), carModelsComboBox.getSelectionModel().getSelectedItem()));
     }
 
     public void clearSearchingOptionsButtonAction() {
@@ -194,6 +199,27 @@ public class ChartController {
 
         carDataTableView.setItems(data);
         setCarImagesTableView(cars);
+        scroll.setMax(data.size());
+    }
+
+    public void setScrollBar(TableView<?> tableView) {
+        scroll.setMax(tableView.getItems().size());
+        scroll.setMin(0);
+        scroll.valueProperty().addListener((observableValue, number, t1) -> {
+            tableView.scrollTo(t1.intValue());
+            carImagesTableView.scrollTo(t1.intValue());
+        });
+    }
+
+    private ScrollBar findScrollBar(TableView<?> tableView) {
+        ScrollBar scrollBar = null;
+        for (Node node : tableView.lookupAll(".scroll-bar")) {
+            if (node instanceof ScrollBar) {
+                scrollBar = (ScrollBar) node;
+                break;
+            }
+        }
+        return scrollBar;
     }
 
     private void setCarImagesTableView(List<Car> cars) {

@@ -37,16 +37,16 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollBar?>
 <?import javafx.scene.control.Slider?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox prefHeight="757.0" prefWidth="1256.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.potocki.carrentalservice.view.controler.ChartController">
+<VBox prefHeight="757.0" prefWidth="1256.0" stylesheets="@assets/tableViewStyle.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.potocki.carrentalservice.view.controler.ChartController">
    <children>
       <SplitPane dividerPositions="0.2511961722488038" prefHeight="759.0" prefWidth="1256.0">
         <items>
@@ -78,7 +78,6 @@
                               <Label layoutX="62.0" layoutY="57.0" prefHeight="30.0" prefWidth="31.0" text="Date" />
                               <Label layoutX="62.0" layoutY="120.0" prefHeight="30.0" prefWidth="31.0" text="Date" />
                               <Button fx:id="clearButton" layoutX="68.0" layoutY="327.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="163.0" text="CLEAR" />
-                              <ImageView fx:id="carViewTest" fitHeight="150.0" fitWidth="200.0" layoutX="122.0" layoutY="221.0" pickOnBounds="true" preserveRatio="true" />
                            </children>
                         </AnchorPane>
                     </items>
@@ -91,15 +90,15 @@
                     <items>
                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="158.0" prefWidth="561.0">
                            <children>
-                              <TableView fx:id="carDataTableView" layoutX="300.0" prefHeight="683.0" prefWidth="634.0">
+                              <TableView fx:id="carDataTableView" layoutX="300.0" prefHeight="755.0" prefWidth="622.0" styleClass="mytableview">
                                 <columns>
                                   <TableColumn fx:id="carMakeColumn" prefWidth="116.0" text="Make" />
-                                    <TableColumn fx:id="carModelColumn" prefWidth="110.0" text="Model" />
-                                  <TableColumn fx:id="carYearColumn" minWidth="0.0" prefWidth="68.0" text="Year" />
-                                    <TableColumn fx:id="carDescriptionColumn" prefWidth="439.0" text="Description" />
+                                    <TableColumn fx:id="carModelColumn" prefWidth="129.0" text="Model" />
+                                  <TableColumn fx:id="carYearColumn" minWidth="0.0" prefWidth="49.0" text="Year" />
+                                    <TableColumn fx:id="carDescriptionColumn" prefWidth="340.0" text="Description" />
                                 </columns>
                               </TableView>
-                              <TableView fx:id="carImagesTableView" prefHeight="683.0" prefWidth="300.0">
+                              <TableView fx:id="carImagesTableView" prefHeight="755.0" prefWidth="300.0" styleClass="mytableview">
                                 <columns>
                                   <TableColumn fx:id="carImagesColumn" prefWidth="299.0" text="Car" />
                                 </columns>
@@ -118,6 +117,7 @@
                            </children></AnchorPane>
                     </items>
                   </SplitPane>
+                  <ScrollBar fx:id="scroll" layoutX="921.0" orientation="VERTICAL" prefHeight="683.0" prefWidth="15.0" />
                </children>
             </AnchorPane>
         </items>
