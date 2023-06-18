@@ -132,8 +132,8 @@ public class ChartController {
 //
 //    }
 
-    
-    
+
+
     public void setPriceRangeSlider() {
         priceRangeSlider.setMin(0);
         priceRangeSlider.setMax(Integer.parseInt(maxPrice));
