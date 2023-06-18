@@ -1,8 +1,12 @@
 package pl.potocki.carrentalservice.view.controler;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
+import javafx.scene.text.Text;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -56,7 +60,7 @@ public class ChartController {
     @FXML
     public TableColumn<?, String> carModelColumn;
     @FXML
-    public TableColumn<?, String> CarDescriptionColumn;
+    public TableColumn<?, String> carDescriptionColumn;
 
 
     @FXML
@@ -179,7 +183,37 @@ public class ChartController {
         for(Car car: cars){
             System.out.println(car.toString());
         }
-//        ObservableList<Movie> data = FXCollections.observableList(movies);
+
+        ObservableList<Car> data = FXCollections.observableList(cars);
+        setColumnForCarTableView(carTableView);
+        wrapEachColumnsFromCarTableView();
+
+        carTableView.setItems(data);
+    }
+
+    private void wrapEachColumnsFromCarTableView() {
+        wrapTextForTableColumn(carMakeColumn);
+        wrapTextForTableColumn(carModelColumn);
+        wrapTextForTableColumn(carDescriptionColumn);
+    }
+
+    public static <T> void wrapTextForTableColumn(TableColumn<T, String> tableColumn) {
+        tableColumn.setCellFactory(tc -> {
+            TableCell<T, String> cell = new TableCell<>();
+            Text text = new Text();
+            cell.setGraphic(text);
+            cell.setPrefHeight(Control.USE_COMPUTED_SIZE);
+            text.wrappingWidthProperty().bind(tableColumn.widthProperty());
+            text.textProperty().bind(cell.itemProperty());
+            return cell;
+        });
+    }
+
+    private void setColumnForCarTableView(TableView<?> tableView) {
+        carMakeColumn.setCellValueFactory((new PropertyValueFactory<>("carMake")));
+        carModelColumn.setCellValueFactory((new PropertyValueFactory<>("carModel")));
+        carDescriptionColumn.setCellValueFactory((new PropertyValueFactory<>("description")));
+        tableView.setFixedCellSize(155);
     }
 
 //    public static List<ImagePoster> getImagePosters(List<? extends Movie> favouriteMovies) {

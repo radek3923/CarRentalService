@@ -91,12 +91,12 @@
                     <items>
                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="158.0" prefWidth="561.0">
                            <children>
-                              <TableView prefHeight="683.0" prefWidth="934.0">
+                              <TableView fx:id="carTableView" prefHeight="683.0" prefWidth="934.0">
                                 <columns>
                                   <TableColumn fx:id="carImagesColumn" prefWidth="339.0" text="C1" />
                                   <TableColumn fx:id="carMakeColumn" prefWidth="195.0" text="C2" />
                                     <TableColumn fx:id="carModelColumn" prefWidth="207.0" text="C3" />
-                                    <TableColumn fx:id="CarDescriptionColumn" prefWidth="192.0" text="C4" />
+                                    <TableColumn fx:id="carDescriptionColumn" prefWidth="192.0" text="C4" />
                                 </columns>
                               </TableView>
                            </children></AnchorPane>
