@@ -58,7 +58,7 @@ public class CarService {
 
     @SneakyThrows
     public Image getCarImage(String carMake, String carModel) {
-        String imageUrl = "https://cdn.imagin.studio/getImage?&customer=plpretius&make=" + carMake + "&modelFamily=" + carModel;
+        String imageUrl =  imaginStudioUrl + "&make=" + carMake + "&modelFamily=" + carModel;
         BufferedImage bufferedImage = downloadImageFromURL(imageUrl);
         return convertBufferedImageToImage(bufferedImage);
     }
