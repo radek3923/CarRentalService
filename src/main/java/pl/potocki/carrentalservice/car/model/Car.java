@@ -16,11 +16,12 @@ import lombok.NoArgsConstructor;
 @Builder
 public class Car {
 
-    public Car(String carMake, String carModel, int year, String description) {
+    public Car(String carMake, String carModel, int year, String description, int msrp) {
         this.carMake = carMake;
         this.carModel = carModel;
         this.year = year;
         this.description = description;
+        this.msrp = msrp;
     }
 
     @Id
@@ -34,4 +35,7 @@ public class Car {
     private int year;
 
     private String description;
+
+    //Manufacturers Suggested Retail Price
+    private int msrp;
 }

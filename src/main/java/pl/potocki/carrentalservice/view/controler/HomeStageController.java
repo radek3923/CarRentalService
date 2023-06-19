@@ -1,5 +1,6 @@
 package pl.potocki.carrentalservice.view.controler;
 
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.Event;
@@ -41,6 +42,7 @@ public class HomeStageController {
     private final CarRentalService carRentalService;
     private final String defaultPrice = "100";
     private final String maxPrice = "1000";
+    private final int perDayParameter = 200;
 
 
     @Value("classpath:/stages/RentalCarsStage.fxml")
@@ -86,13 +88,15 @@ public class HomeStageController {
     @FXML
     public TableView<Car> carDataTableView = new TableView<>();
     @FXML
-    public TableColumn<?, String> carMakeColumn;
+    public TableColumn<Car, String> carMakeColumn;
     @FXML
-    public TableColumn<?, String> carModelColumn;
+    public TableColumn<Car, String> carModelColumn;
     @FXML
-    public TableColumn<?, String> carYearColumn;
+    public TableColumn<Car, String> carYearColumn;
     @FXML
-    public TableColumn<?, String> carDescriptionColumn;
+    public TableColumn<Car, String> carDescriptionColumn;
+    @FXML
+    public TableColumn<Car, String> carPriceColumn;
 
     @FXML
     public void initialize() {
@@ -110,6 +114,13 @@ public class HomeStageController {
 
         clearButton.setOnAction(
                 actionEvent -> clearSearchingOptionsButtonAction()
+        );
+
+        dateFromDatePicker.setOnAction(
+                actionEvent -> updateRentalPriceLabel(carDataTableView.getSelectionModel().getSelectedItem().getMsrp())
+        );
+        dateToDatePicker.setOnAction(
+                actionEvent -> updateRentalPriceLabel(carDataTableView.getSelectionModel().getSelectedItem().getMsrp())
         );
 
         seeRentalCarsButton.setOnAction(
@@ -131,8 +142,8 @@ public class HomeStageController {
                 .addListener((observableValue, oldValue, newValue) -> {
                     if (newValue != null) {
                         Car currentCar = carDataTableView.getSelectionModel().getSelectedItem();
-                        rentalPriceLabel.setText("50");
-                        rentCar(currentCar, new BigDecimal(100), dateFromDatePicker.getValue(), dateToDatePicker.getValue());
+                        updateRentalPriceLabel(currentCar.getMsrp());
+                        rentCar(currentCar, new BigDecimal(rentalPriceLabel.getText()), dateFromDatePicker.getValue(), dateToDatePicker.getValue());
 
                         int selectedIndex = carDataTableView.getSelectionModel().getSelectedIndex();
                         carImagesTableView.getSelectionModel().clearAndSelect(selectedIndex);
@@ -149,6 +160,15 @@ public class HomeStageController {
 
         carImagesTableView.addEventFilter(ScrollEvent.ANY, Event::consume);
         carDataTableView.addEventFilter(ScrollEvent.ANY, Event::consume);
+    }
+
+    private void updateRentalPriceLabel(int msrp) {
+        LocalDate dateFrom = dateFromDatePicker.getValue();
+        LocalDate dateTo = dateToDatePicker.getValue();
+        long differenceInDays = java.time.temporal.ChronoUnit.DAYS.between(dateFrom, dateTo);
+
+        BigDecimal price = new BigDecimal(msrp / perDayParameter * differenceInDays);
+        rentalPriceLabel.setText(String.valueOf(price));
     }
 
     private void handleOpenRentalCarsStage() throws IOException {
@@ -220,7 +240,6 @@ public class HomeStageController {
         String carMake = carMakesComboBox.getSelectionModel().getSelectedItem();
         String carModel = carModelsComboBox.getSelectionModel().getSelectedItem();
         List<Car> cars = carService.getAllCarTrims(carMake, carModel);
-
         ObservableList<Car> data = FXCollections.observableList(cars);
         setColumnForCarTableView(carDataTableView);
         wrapEachColumnsFromCarTableView();
@@ -279,11 +298,14 @@ public class HomeStageController {
         });
     }
 
-    public void setColumnForCarTableView(TableView<?> tableView) {
-        carMakeColumn.setCellValueFactory((new PropertyValueFactory<>("carMake")));
-        carModelColumn.setCellValueFactory((new PropertyValueFactory<>("carModel")));
-        carYearColumn.setCellValueFactory((new PropertyValueFactory<>("year")));
-        carDescriptionColumn.setCellValueFactory((new PropertyValueFactory<>("description")));
+    public void setColumnForCarTableView(TableView<Car> tableView) {
+        carMakeColumn.setCellValueFactory(new PropertyValueFactory<>("carMake"));
+        carModelColumn.setCellValueFactory(new PropertyValueFactory<>("carModel"));
+        carYearColumn.setCellValueFactory(new PropertyValueFactory<>("year"));
+        carDescriptionColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
+        carPriceColumn.setCellValueFactory(cellData ->
+                new SimpleStringProperty(Integer.toString(cellData.getValue().getMsrp() / perDayParameter)));
+
         tableView.setFixedCellSize(150);
     }
 }

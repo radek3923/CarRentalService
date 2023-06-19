@@ -46,13 +46,13 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox prefHeight="757.0" prefWidth="1256.0" stylesheets="@../assets/tableViewStyle.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.potocki.carrentalservice.view.controler.HomeStageController">
+<VBox prefHeight="758.0" prefWidth="1330.0" stylesheets="@../assets/tableViewStyle.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.potocki.carrentalservice.view.controler.HomeStageController">
    <children>
-      <SplitPane dividerPositions="0.2511961722488038" prefHeight="759.0" prefWidth="1256.0">
+      <SplitPane dividerPositions="0.2183734939759036" prefHeight="759.0" prefWidth="1256.0">
         <items>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                <children>
-                  <SplitPane dividerPositions="0.2775564409030544" orientation="VERTICAL" prefHeight="755.0" prefWidth="316.0">
+                  <SplitPane dividerPositions="0.2775564409030544" orientation="VERTICAL" prefHeight="755.0" prefWidth="331.0">
                     <items>
                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="230.0" prefWidth="314.0">
                            <children>
@@ -83,27 +83,28 @@
                   </SplitPane>
                </children>
             </AnchorPane>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="598.0" prefWidth="586.0">
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="756.0" prefWidth="989.0">
                <children>
-                  <SplitPane dividerPositions="0.8207171314741036" layoutX="-2.0" orientation="VERTICAL" prefHeight="755.0" prefWidth="936.0">
+                  <SplitPane dividerPositions="0.8207171314741036" layoutX="-2.0" orientation="VERTICAL" prefHeight="755.0" prefWidth="1035.0">
                     <items>
-                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="158.0" prefWidth="561.0">
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="615.0" prefWidth="989.0">
                            <children>
-                              <TableView fx:id="carDataTableView" layoutX="300.0" prefHeight="683.0" prefWidth="621.0" styleClass="mytableview">
+                              <TableView fx:id="carDataTableView" layoutX="300.0" layoutY="1.0" prefHeight="615.0" prefWidth="738.0" styleClass="mytableview">
                                 <columns>
                                   <TableColumn fx:id="carMakeColumn" prefWidth="116.0" text="Make" />
                                     <TableColumn fx:id="carModelColumn" prefWidth="129.0" text="Model" />
                                   <TableColumn fx:id="carYearColumn" minWidth="0.0" prefWidth="49.0" text="Year" />
-                                    <TableColumn fx:id="carDescriptionColumn" prefWidth="340.0" text="Description" />
+                                    <TableColumn fx:id="carDescriptionColumn" prefWidth="329.0" text="Description" />
+                                    <TableColumn fx:id="carPriceColumn" prefWidth="90.0" text="Price per day" />
                                 </columns>
                               </TableView>
-                              <TableView fx:id="carImagesTableView" prefHeight="683.0" prefWidth="300.0" styleClass="mytableview">
+                              <TableView fx:id="carImagesTableView" prefHeight="615.0" prefWidth="300.0" styleClass="mytableview">
                                 <columns>
                                   <TableColumn fx:id="carImagesColumn" prefWidth="299.0" text="Car" />
                                 </columns>
                               </TableView>
                            </children></AnchorPane>
-                        <AnchorPane prefHeight="51.0" prefWidth="934.0">
+                        <AnchorPane prefHeight="132.0" prefWidth="1010.0">
                            <children>
                               <ButtonBar layoutY="66.0" prefHeight="64.0" prefWidth="921.0">
                                 <buttons>
@@ -118,7 +119,7 @@
                            </children></AnchorPane>
                     </items>
                   </SplitPane>
-                  <ScrollBar fx:id="scroll" layoutX="921.0" orientation="VERTICAL" prefHeight="683.0" prefWidth="15.0" />
+                  <ScrollBar fx:id="scroll" layoutX="1014.0" orientation="VERTICAL" prefHeight="615.0" prefWidth="17.0" />
                </children>
             </AnchorPane>
         </items>

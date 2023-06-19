@@ -16,10 +16,6 @@ public class CarRentalService {
 
     private final CarRentalRepository carRentalRepository;
 
-    public Optional<CarRental> findCarRentalById(Long id) {
-        return carRentalRepository.findById(id);
-    }
-
     public String addCarRental(CarRental carRental) {
         if (carRentalRepository.findAll()
                 .stream()

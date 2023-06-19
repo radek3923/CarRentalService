@@ -16,6 +16,9 @@ public class CarTrimDto {
     @JsonProperty("year")
     private int year;
 
+    @JsonProperty("msrp")
+    private int msrp;
+
     @JsonProperty("make_model")
     private CarMakeModelDto carMakeModelDto;
 }

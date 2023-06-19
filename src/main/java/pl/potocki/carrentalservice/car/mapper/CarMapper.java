@@ -14,6 +14,7 @@ public class CarMapper extends ObjectMapper {
                 .carModel(carTrimDto.getCarMakeModelDto().getName())
                 .year(carTrimDto.getYear())
                 .description(carTrimDto.getDescription())
+                .msrp(carTrimDto.getMsrp())
                 .build();
     }
 }
