@@ -48,8 +48,14 @@ public class HomeStageController {
     @Value("classpath:/stages/RentalCarsStage.fxml")
     private Resource rentalCarsStageResource;
 
+    @Value("classpath:/stages/CarDetailsStage.fxml")
+    private Resource carDetailsStageResource;
+
     @Value("${spring.application.ui.rentalCarsStage.title}")
     private String rentalCarsStageTitle;
+
+    @Value("${spring.application.ui.carDetailsStage.title}")
+    private String carDetailsStageTitle;
     @FXML
     public Button searchButton;
     @FXML
@@ -134,8 +140,18 @@ public class HomeStageController {
         );
 
         seeCarDetailsButton.setOnAction(
-                //TODO add new stage
-                actionEvent -> System.out.println(carService.getAvailablePaintCombinations(carMakesComboBox.getValue(), carModelsComboBox.getValue()))
+                actionEvent -> {
+                    try {
+                        if (carDataTableView.getSelectionModel().getSelectedItem() != null) {
+                            handleOpenCarDetailsStage(carDataTableView.getSelectionModel().getSelectedItem());
+                        }
+                        else{
+                            infoLabel.setText("No car selected");
+                        }
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
         );
 
         carDataTableView.getSelectionModel().selectedItemProperty()
@@ -178,6 +194,18 @@ public class HomeStageController {
         Scene scene = new Scene(loader.load());
         newWindow.setScene(scene);
         newWindow.setTitle(rentalCarsStageTitle);
+        newWindow.show();
+    }
+
+    private void handleOpenCarDetailsStage(Car car) throws IOException {
+        Stage newWindow = new Stage();
+        FXMLLoader loader = new FXMLLoader(carDetailsStageResource.getURL());
+        CarDetailsStageController controller = new CarDetailsStageController(carService);
+        controller.setCar(car);
+        loader.setController(controller);
+        Scene scene = new Scene(loader.load());
+        newWindow.setScene(scene);
+        newWindow.setTitle(carDetailsStageTitle);
         newWindow.show();
     }
 
