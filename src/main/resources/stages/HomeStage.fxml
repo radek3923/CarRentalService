@@ -37,6 +37,7 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ProgressBar?>
 <?import javafx.scene.control.ScrollBar?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.TableColumn?>
@@ -45,7 +46,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox prefHeight="758.0" prefWidth="1330.0" stylesheets="@../assets/tableViewStyle.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.potocki.carrentalservice.view.controler.HomeStageController">
+<VBox prefHeight="793.0" prefWidth="1330.0" stylesheets="@../assets/tableViewStyle.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.potocki.carrentalservice.view.controler.HomeStageController">
    <children>
       <SplitPane dividerPositions="0.2183734939759036" prefHeight="759.0" prefWidth="1256.0">
         <items>
@@ -122,5 +123,6 @@
             </AnchorPane>
         </items>
       </SplitPane>
+      <ProgressBar fx:id="progressBar" prefHeight="33.0" prefWidth="1330.0" progress="0.0" />
    </children>
 </VBox>

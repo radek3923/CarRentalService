@@ -3,7 +3,10 @@ package pl.potocki.carrentalservice.view.controler;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
+import javafx.concurrent.WorkerStateEvent;
 import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -30,6 +33,7 @@ import pl.potocki.carrentalservice.carRental.service.CarRentalService;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -45,6 +49,7 @@ public class HomeStageController {
     private final String defaultMaxPrice = "1000";
     private final int perDayParameter = 200;
 
+    private Task<List<Car>> searchTask;
 
     @Value("classpath:/stages/RentalCarsStage.fxml")
     private Resource rentalCarsStageResource;
@@ -104,6 +109,8 @@ public class HomeStageController {
     public TableColumn<Car, String> carDescriptionColumn;
     @FXML
     public TableColumn<Car, String> carPriceColumn;
+    @FXML
+    ProgressBar progressBar;
 
     @FXML
     public void initialize() {
@@ -115,6 +122,7 @@ public class HomeStageController {
         clearButton.setOnAction(
                 actionEvent -> clearSearchingOptionsButtonAction()
         );
+
 
         rentalCarDatePicker.setOnAction(
                 actionEvent -> updateRentalPriceLabel(carDataTableView.getSelectionModel().getSelectedItem().getMsrp())
@@ -283,9 +291,10 @@ public class HomeStageController {
         wrapEachColumnsFromCarTableView();
 
         carDataTableView.setItems(data);
-        setCarImagesTableView(cars);
+        getCarImagesTableView(cars);
         scroll.setMax(data.size());
     }
+
 
     public void setScrollBar(TableView<?> tableView) {
         scroll.setMax(tableView.getItems().size());
@@ -296,26 +305,55 @@ public class HomeStageController {
         });
     }
 
-    public void setCarImagesTableView(List<Car> cars) {
-        List<CarImage> imagesFromCars = getCarImages(cars);
-        ObservableList<CarImage> carImages = FXCollections.observableList(imagesFromCars);
+    public void getCarImagesTableView(List<Car> cars) {
+        System.out.println("Pobieram zdjęcia");
+        getCarImages(cars);
+    }
 
+    public void setCarImagesTableView(List<CarImage> imagesFromCars) {
+        ObservableList<CarImage> carImages = FXCollections.observableList(imagesFromCars);
         carImagesColumn.setCellValueFactory((new PropertyValueFactory<>("image")));
         carImagesTableView.setFixedCellSize(150);
         carImagesTableView.setItems(carImages);
     }
 
-
     public List<CarImage> getCarImages(List<Car> cars) {
-        return cars.stream()
-                .map(c -> {
-                    ImageView imageView = new ImageView(carService.getCarImage(c.getCarMake(), c.getCarModel(), "", ""));
+        progressBar.setVisible(true);
+        Task<List<CarImage>> task = new Task<List<CarImage>>() {
+            @Override
+            protected List<CarImage> call() {
+                List<CarImage> carImages = new ArrayList<>();
+                int totalProgress = cars.size();
+                int currentProgress = 0;
+
+                for (Car car : cars) {
+                    ImageView imageView = new ImageView(carService.getCarImage(car.getCarMake(), car.getCarModel(), "", ""));
                     imageView.setFitHeight(180);
-                    imageView.maxHeight(180);
                     imageView.setFitWidth(300);
-                    return new CarImage(imageView);
-                })
-                .toList();
+                    CarImage carImage = new CarImage(imageView);
+                    carImages.add(carImage);
+
+                    currentProgress++;
+                    updateProgress(currentProgress, totalProgress);
+                }
+                return carImages;
+            }
+        };
+
+        progressBar.progressProperty().bind(task.progressProperty());
+
+        task.setOnSucceeded(new EventHandler<>() {
+            @Override
+            public void handle(WorkerStateEvent event) {
+                setCarImagesTableView(task.getValue());
+                progressBar.setVisible(false);
+            }
+        });
+
+        Thread thread = new Thread(task);
+        thread.start();
+
+        return new ArrayList<CarImage>();
     }
 
     public void wrapEachColumnsFromCarTableView() {
