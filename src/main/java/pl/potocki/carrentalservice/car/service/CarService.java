@@ -48,7 +48,7 @@ public class CarService {
     }
 
     @SneakyThrows
-    public List<Car> getAllCarTrims(String carMake, String carModel) {
+    public List<Car> getAllCarTrims(String carMake, String carModel, int priceFrom, int priceTo, int perDayParameter) {
         URL url = new URL(getCarDataApi + "/api/trims?verbose=yes&year=" + YEAR + "&make=" + carMake + "&model=" + carModel);
         CarDataDto carDataDto = carMapper.readValue(url, CarDataDto.class);
 
@@ -56,9 +56,9 @@ public class CarService {
         });
 
         return carTrimDtoList.stream()
+                .filter(c -> c.getMsrp()/perDayParameter > priceFrom && c.getMsrp()/perDayParameter < priceTo)
                 .map(carMapper::toCar)
                 .toList();
-
     }
 
     @SneakyThrows

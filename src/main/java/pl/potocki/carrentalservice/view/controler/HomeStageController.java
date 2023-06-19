@@ -239,7 +239,10 @@ public class HomeStageController {
     public void searchCarsButtonAction() {
         String carMake = carMakesComboBox.getSelectionModel().getSelectedItem();
         String carModel = carModelsComboBox.getSelectionModel().getSelectedItem();
-        List<Car> cars = carService.getAllCarTrims(carMake, carModel);
+        int priceFrom = Integer.parseInt(priceRangeFromTextField.getText());
+        int priceTo = Integer.parseInt(priceRangeToTextField.getText());
+
+        List<Car> cars = carService.getAllCarTrims(carMake, carModel, priceFrom, priceTo, perDayParameter);
         ObservableList<Car> data = FXCollections.observableList(cars);
         setColumnForCarTableView(carDataTableView);
         wrapEachColumnsFromCarTableView();
