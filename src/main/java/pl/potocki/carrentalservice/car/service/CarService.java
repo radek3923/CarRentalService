@@ -56,39 +56,17 @@ public class CarService {
         });
 
         return carTrimDtoList.stream()
-                .filter(c -> c.getMsrp()/perDayParameter >= priceFrom && c.getMsrp()/perDayParameter <= priceTo)
+                .filter(c -> c.getMsrp() / perDayParameter >= priceFrom && c.getMsrp() / perDayParameter <= priceTo)
                 .map(carMapper::toCar)
                 .toList();
     }
 
     @SneakyThrows
-    public Image getCarImage(String carMake, String carModel, String paintId) {
-        String imageUrl = getCarImagesApiUrl + "&zoomType=fullscreen&make=" + carMake + "&modelFamily=" + carModel + "&paintId=" + paintId;
+    public Image getCarImage(String carMake, String carModel, String paintId, String angle) {
+        String imageUrl = getCarImagesApiUrl + "&zoomType=fullscreen&make=" + carMake + "&modelFamily=" + carModel + "&paintId=" + paintId + "&angle=" + angle;
         BufferedImage bufferedImage = downloadImageFromURL(imageUrl);
         return convertBufferedImageToImage(bufferedImage);
     }
-
-//    @SneakyThrows
-//    public List<String> getAvailablePaintCombinations(String carMake, String carModel) {
-//        URL url = new URL(getCarPaintCombinationsApiUrl + "&make=" + carMake + "&modelFamily=" + carModel);
-//        List<String> availablePaintCombinations = new ArrayList<>();
-//
-//        ObjectMapper mapper = new ObjectMapper();
-//        JsonNode rootNode = mapper.readTree(url);
-//
-//        JsonNode paintCombinationsNode = rootNode.path("paintData").path("paintCombinations");
-//        Iterator<String> fieldNames = paintCombinationsNode.fieldNames();
-//
-//        while (fieldNames.hasNext()) {
-//            String paintCombinationKey = fieldNames.next();
-//            JsonNode paintCombinationNode = paintCombinationsNode.path(paintCombinationKey);
-//            boolean isAvailable = paintCombinationNode.path("mapped").elements().next().path("available").asBoolean();
-//            if (isAvailable) {
-//                availablePaintCombinations.add(paintCombinationKey);
-//            }
-//        }
-//        return availablePaintCombinations;
-//    }
 
     @SneakyThrows
     public List<PaintCombination> getAvailablePaintCombinations(String carMake, String carModel) {

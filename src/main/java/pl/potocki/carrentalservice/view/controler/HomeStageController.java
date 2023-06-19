@@ -304,7 +304,7 @@ public class HomeStageController {
     public List<CarImage> getCarImages(List<Car> cars) {
         return cars.stream()
                 .map(c -> {
-                    ImageView imageView = new ImageView(carService.getCarImage(c.getCarMake(), c.getCarModel(), ""));
+                    ImageView imageView = new ImageView(carService.getCarImage(c.getCarMake(), c.getCarModel(), "", ""));
                     imageView.setFitHeight(180);
                     imageView.maxHeight(180);
                     imageView.setFitWidth(300);
