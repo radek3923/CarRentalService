@@ -243,6 +243,8 @@ public class HomeStageController {
         int priceTo = Integer.parseInt(priceRangeToTextField.getText());
 
         List<Car> cars = carService.getAllCarTrims(carMake, carModel, priceFrom, priceTo, perDayParameter);
+        infoLabel.setText("Found " + cars.size() + " cars");
+
         ObservableList<Car> data = FXCollections.observableList(cars);
         setColumnForCarTableView(carDataTableView);
         wrapEachColumnsFromCarTableView();
