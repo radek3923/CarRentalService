@@ -7,7 +7,6 @@ import pl.potocki.carrentalservice.carRental.model.CarRental;
 import pl.potocki.carrentalservice.carRental.repository.CarRentalRepository;
 
 import java.util.List;
-import java.util.Optional;
 
 @AllArgsConstructor
 @Service

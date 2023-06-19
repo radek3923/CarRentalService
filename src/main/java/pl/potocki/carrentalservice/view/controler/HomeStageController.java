@@ -18,6 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
+import org.apache.commons.lang3.StringUtils;
 import pl.potocki.carrentalservice.car.model.Car;
 import pl.potocki.carrentalservice.car.model.CarImage;
 import pl.potocki.carrentalservice.car.model.dto.CarMakeDto;
@@ -274,6 +275,7 @@ public class HomeStageController {
         int priceTo = Integer.parseInt(priceRangeToTextField.getText());
 
         List<Car> cars = carService.getAllCarTrims(carMake, carModel, priceFrom, priceTo, perDayParameter);
+        cars.forEach(car -> car.setDescription(StringUtils.upperCase(car.getDescription())));
         infoLabel.setText("Found " + cars.size() + " cars");
 
         ObservableList<Car> data = FXCollections.observableList(cars);
