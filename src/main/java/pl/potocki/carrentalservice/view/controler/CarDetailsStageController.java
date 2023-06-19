@@ -5,16 +5,16 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import pl.potocki.carrentalservice.car.model.Car;
 import pl.potocki.carrentalservice.car.service.CarService;
 
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
 @RequiredArgsConstructor
@@ -30,7 +30,7 @@ public class CarDetailsStageController implements Initializable {
     @FXML
     private Label carInfoLabel;
     @FXML
-    private ComboBox availableColorComboBox;
+    private ComboBox<String> availableColorComboBox;
     @FXML
     private Button previousImageButton;
     @FXML
@@ -39,6 +39,28 @@ public class CarDetailsStageController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        carInfoLabel.setText(car.toString());
+        String carMake = car.getCarMake();
+        String carModel = car.getCarModel();
+
+        carInfoLabel.setText("Car details: " + carMake + ", " + carModel + ", " + car.getDescription());
+        setAvailableColorCombinations(carMake, carModel);
+
+        carImageView.setImage(getImage(carMake, carModel));
+
+        availableColorComboBox.setOnAction(event -> {
+            carImageView.setImage(getImage(carMake, carModel));
+        });
+    }
+
+    public Image getImage(String carMake, String carModel){
+        return carService.getCarImage(carMake, carModel, availableColorComboBox.getSelectionModel().getSelectedItem());
+    }
+
+    public void setAvailableColorCombinations(String carMake, String carModel){
+        List<String> availableColorCombinatios = carService.getAvailablePaintCombinations(carMake, carModel);
+
+        availableColorComboBox.getItems().clear();
+        availableColorComboBox.getItems().addAll(availableColorCombinatios);
+        availableColorComboBox.getSelectionModel().select(0);
     }
 }
