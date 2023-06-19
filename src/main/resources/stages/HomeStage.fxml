@@ -78,8 +78,8 @@
                               <ComboBox fx:id="carMakesComboBox" layoutX="16.0" layoutY="229.0" prefWidth="150.0" />
                               <Button fx:id="searchButton" layoutX="157.0" layoutY="469.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="110.0" text="Search" />
                               <Button fx:id="clearButton" layoutX="33.0" layoutY="469.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="110.0" text="Clear" />
-                              <PlusMinusSlider layoutX="174.0" layoutY="139.0" prefWidth="40.0" />
-                              <PlusMinusSlider layoutX="32.0" layoutY="139.0" prefWidth="40.0" />
+                              <PlusMinusSlider fx:id="toSlider" layoutX="168.0" layoutY="139.0" prefWidth="40.0" />
+                              <PlusMinusSlider fx:id="fromSlider" layoutX="32.0" layoutY="139.0" prefWidth="40.0" />
                               <NotificationPane layoutX="119.0" layoutY="405.0" prefHeight="5.0" prefWidth="52.0" />
                            </children>
                         </AnchorPane>

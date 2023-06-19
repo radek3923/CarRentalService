@@ -23,6 +23,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.controlsfx.control.NotificationPane;
 import org.controlsfx.control.Notifications;
+import org.controlsfx.control.PlusMinusSlider;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
@@ -119,6 +120,10 @@ public class HomeStageController {
     private ProgressBar progressBar;
     @FXML
     private NotificationPane notificationPane;
+    @FXML
+    private PlusMinusSlider fromSlider;
+    @FXML
+    private PlusMinusSlider toSlider;
 
     @FXML
     public void initialize() {
@@ -130,6 +135,18 @@ public class HomeStageController {
         clearButton.setOnAction(
                 actionEvent -> clearSearchingOptionsButtonAction()
         );
+
+        fromSlider.setOnValueChanged(event -> {
+            int value = (int) (Integer.parseInt(priceRangeFromTextField.getText()) + fromSlider.getValue());
+            if (value < 0) value = 0;
+            priceRangeFromTextField.setText(Integer.toString(value));
+        });
+
+        toSlider.setOnValueChanged(event -> {
+            int value = (int) (Integer.parseInt(priceRangeToTextField.getText()) + toSlider.getValue());
+            if (value < 0) value = 0;
+            priceRangeToTextField.setText(Integer.toString(value));
+        });
 
 
         rentalCarDatePicker.setOnAction(
@@ -231,7 +248,7 @@ public class HomeStageController {
     public void rentCar(Car car, BigDecimal price, LocalDate rentalDate, LocalDate returnDate) {
         rentCarButton.setOnMouseClicked(
                 mouseEvent -> {
-                    if(carDataTableView.getSelectionModel().getSelectedItem() == null){
+                    if (carDataTableView.getSelectionModel().getSelectedItem() == null) {
                         noCarSelected();
                     }
                     CarRental carRental = CarRental.builder()
