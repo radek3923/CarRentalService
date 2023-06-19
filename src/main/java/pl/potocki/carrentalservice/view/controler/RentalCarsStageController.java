@@ -28,28 +28,28 @@ public class RentalCarsStageController implements Initializable {
 
     private final CarRentalService carRentalService;
     @FXML
-    public TableView<CarRental> carDataTableView = new TableView<>();
+    private TableView<CarRental> carDataTableView = new TableView<>();
     @FXML
-    public TableColumn<CarRental, Long> carRentalIdColumn;
+    private TableColumn<CarRental, Long> carRentalIdColumn;
     @FXML
-    public TableColumn<CarRental, String> carMakeColumn;
+    private TableColumn<CarRental, String> carMakeColumn;
     @FXML
-    public TableColumn<CarRental, String> carModelColumn;
+    private TableColumn<CarRental, String> carModelColumn;
     @FXML
-    public TableColumn<CarRental, String> carYearColumn;
+    private TableColumn<CarRental, String> carYearColumn;
     @FXML
-    public TableColumn<CarRental, String> carDescriptionColumn;
+    private TableColumn<CarRental, String> carDescriptionColumn;
 
     @FXML
-    public TableColumn<CarRental, LocalDate> carRentalDateColumn;
+    private TableColumn<CarRental, LocalDate> carRentalDateColumn;
 
     @FXML
-    public TableColumn<CarRental, LocalDate> carReturnDateColumn;
+    private TableColumn<CarRental, LocalDate> carReturnDateColumn;
 
     @FXML
-    public TableColumn<CarRental, BigDecimal> carPriceColumn;
+    private TableColumn<CarRental, BigDecimal> carPriceColumn;
     @FXML
-    public ScrollBar scroll;
+    private ScrollBar scroll;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {

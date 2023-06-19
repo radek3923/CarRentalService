@@ -69,56 +69,56 @@ public class HomeStageController {
     @Value("${spring.application.ui.carDetailsStage.title}")
     private String carDetailsStageTitle;
     @FXML
-    public Button searchButton;
+    private Button searchButton;
     @FXML
-    public Button clearButton;
+    private Button clearButton;
     @FXML
-    public Button seeRentalCarsButton;
+    private Button seeRentalCarsButton;
     @FXML
-    public Button rentCarButton;
+    private Button rentCarButton;
     @FXML
-    public Button seeCarDetailsButton;
+    private Button seeCarDetailsButton;
     @FXML
-    public TextField priceRangeFromTextField;
+    private TextField priceRangeFromTextField;
     @FXML
-    public TextField priceRangeToTextField;
+    private TextField priceRangeToTextField;
     @FXML
-    public Label infoLabel;
+    private Label infoLabel;
     @FXML
-    public Label rentalPriceLabel;
+    private Label rentalPriceLabel;
     @FXML
-    protected ScrollBar scroll;
+    private ScrollBar scroll;
 
     @FXML
-    public DatePicker rentalCarDatePicker;
+    private DatePicker rentalCarDatePicker;
     @FXML
-    public DatePicker returnCarDatePicker;
+    private DatePicker returnCarDatePicker;
     @FXML
-    public ComboBox<String> carMakesComboBox;
+    private ComboBox<String> carMakesComboBox;
     @FXML
-    public ComboBox<String> carModelsComboBox;
+    private ComboBox<String> carModelsComboBox;
 
     @FXML
-    public TableView<CarImage> carImagesTableView;
+    private TableView<CarImage> carImagesTableView;
     @FXML
-    public TableColumn<CarImage, ImageView> carImagesColumn;
+    private TableColumn<CarImage, ImageView> carImagesColumn;
 
     @FXML
-    public TableView<Car> carDataTableView = new TableView<>();
+    private TableView<Car> carDataTableView = new TableView<>();
     @FXML
-    public TableColumn<Car, String> carMakeColumn;
+    private TableColumn<Car, String> carMakeColumn;
     @FXML
-    public TableColumn<Car, String> carModelColumn;
+    private TableColumn<Car, String> carModelColumn;
     @FXML
-    public TableColumn<Car, String> carYearColumn;
+    private TableColumn<Car, String> carYearColumn;
     @FXML
-    public TableColumn<Car, String> carDescriptionColumn;
+    private TableColumn<Car, String> carDescriptionColumn;
     @FXML
-    public TableColumn<Car, String> carPriceColumn;
+    private TableColumn<Car, String> carPriceColumn;
     @FXML
-    ProgressBar progressBar;
+    private ProgressBar progressBar;
     @FXML
-    NotificationPane notificationPane;
+    private NotificationPane notificationPane;
 
     @FXML
     public void initialize() {
