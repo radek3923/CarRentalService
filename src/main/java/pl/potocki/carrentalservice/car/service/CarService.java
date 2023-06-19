@@ -9,6 +9,7 @@ import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
 import pl.potocki.carrentalservice.car.mapper.CarMapper;
 import pl.potocki.carrentalservice.car.model.Car;
+import pl.potocki.carrentalservice.car.model.PaintCombination;
 import pl.potocki.carrentalservice.car.model.dto.CarDataDto;
 import pl.potocki.carrentalservice.car.model.dto.CarMakeDto;
 import pl.potocki.carrentalservice.car.model.dto.CarModelDto;
@@ -67,10 +68,32 @@ public class CarService {
         return convertBufferedImageToImage(bufferedImage);
     }
 
+//    @SneakyThrows
+//    public List<String> getAvailablePaintCombinations(String carMake, String carModel) {
+//        URL url = new URL(getCarPaintCombinationsApiUrl + "&make=" + carMake + "&modelFamily=" + carModel);
+//        List<String> availablePaintCombinations = new ArrayList<>();
+//
+//        ObjectMapper mapper = new ObjectMapper();
+//        JsonNode rootNode = mapper.readTree(url);
+//
+//        JsonNode paintCombinationsNode = rootNode.path("paintData").path("paintCombinations");
+//        Iterator<String> fieldNames = paintCombinationsNode.fieldNames();
+//
+//        while (fieldNames.hasNext()) {
+//            String paintCombinationKey = fieldNames.next();
+//            JsonNode paintCombinationNode = paintCombinationsNode.path(paintCombinationKey);
+//            boolean isAvailable = paintCombinationNode.path("mapped").elements().next().path("available").asBoolean();
+//            if (isAvailable) {
+//                availablePaintCombinations.add(paintCombinationKey);
+//            }
+//        }
+//        return availablePaintCombinations;
+//    }
+
     @SneakyThrows
-    public List<String> getAvailablePaintCombinations(String carMake, String carModel) {
+    public List<PaintCombination> getAvailablePaintCombinations(String carMake, String carModel) {
         URL url = new URL(getCarPaintCombinationsApiUrl + "&make=" + carMake + "&modelFamily=" + carModel);
-        List<String> availablePaintCombinations = new ArrayList<>();
+        List<PaintCombination> availablePaintCombinations = new ArrayList<>();
 
         ObjectMapper mapper = new ObjectMapper();
         JsonNode rootNode = mapper.readTree(url);
@@ -81,11 +104,22 @@ public class CarService {
         while (fieldNames.hasNext()) {
             String paintCombinationKey = fieldNames.next();
             JsonNode paintCombinationNode = paintCombinationsNode.path(paintCombinationKey);
-            boolean isAvailable = paintCombinationNode.path("mapped").elements().next().path("available").asBoolean();
-            if (isAvailable) {
-                availablePaintCombinations.add(paintCombinationKey);
+            JsonNode mappedNode = paintCombinationNode.path("mapped");
+            Iterator<String> mappedFieldNames = mappedNode.fieldNames();
+
+            if (mappedFieldNames.hasNext()) {
+                String firstMappedKey = mappedFieldNames.next();
+                JsonNode firstMappedNode = mappedNode.path(firstMappedKey);
+                boolean isAvailable = firstMappedNode.path("available").asBoolean();
+
+                if (isAvailable) {
+                    String paintDescription = firstMappedNode.path("paintDescription").asText();
+                    PaintCombination paintCombination = new PaintCombination(paintCombinationKey, paintDescription);
+                    availablePaintCombinations.add(paintCombination);
+                }
             }
         }
+
         return availablePaintCombinations;
     }
 

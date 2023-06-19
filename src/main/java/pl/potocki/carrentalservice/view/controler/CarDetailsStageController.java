@@ -7,10 +7,12 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.util.StringConverter;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import pl.potocki.carrentalservice.car.model.Car;
+import pl.potocki.carrentalservice.car.model.PaintCombination;
 import pl.potocki.carrentalservice.car.service.CarService;
 
 import java.net.URL;
@@ -30,7 +32,7 @@ public class CarDetailsStageController implements Initializable {
     @FXML
     private Label carInfoLabel;
     @FXML
-    private ComboBox<String> availableColorComboBox;
+    private ComboBox<PaintCombination> availableColorComboBox;
     @FXML
     private Button previousImageButton;
     @FXML
@@ -50,14 +52,27 @@ public class CarDetailsStageController implements Initializable {
         availableColorComboBox.setOnAction(event -> {
             carImageView.setImage(getImage(carMake, carModel));
         });
+
+        availableColorComboBox.setConverter(new StringConverter<PaintCombination>() {
+            @Override
+            public String toString(PaintCombination paintCombination) {
+                return paintCombination.getPaintDescription();
+            }
+
+            @Override
+            public PaintCombination fromString(String string) {
+                return null;
+            }
+        });
     }
 
-    public Image getImage(String carMake, String carModel){
-        return carService.getCarImage(carMake, carModel, availableColorComboBox.getSelectionModel().getSelectedItem());
+    public Image getImage(String carMake, String carModel) {
+        PaintCombination selectedPaintCombination = availableColorComboBox.getSelectionModel().getSelectedItem();
+        return carService.getCarImage(carMake, carModel, selectedPaintCombination != null ? selectedPaintCombination.getId() : "");
     }
 
-    public void setAvailableColorCombinations(String carMake, String carModel){
-        List<String> availableColorCombinatios = carService.getAvailablePaintCombinations(carMake, carModel);
+    public void setAvailableColorCombinations(String carMake, String carModel) {
+        List<PaintCombination> availableColorCombinatios = carService.getAvailablePaintCombinations(carMake, carModel);
 
         availableColorComboBox.getItems().clear();
         availableColorComboBox.getItems().addAll(availableColorCombinatios);
