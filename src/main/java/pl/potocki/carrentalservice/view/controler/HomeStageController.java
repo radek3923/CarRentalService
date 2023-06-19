@@ -1,5 +1,6 @@
 package pl.potocki.carrentalservice.view.controler;
 
+import com.sun.javafx.menu.MenuBase;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -9,6 +10,7 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -16,8 +18,11 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.controlsfx.control.NotificationPane;
+import org.controlsfx.control.Notifications;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
@@ -30,6 +35,7 @@ import pl.potocki.carrentalservice.car.service.CarService;
 import pl.potocki.carrentalservice.carRental.model.CarRental;
 import pl.potocki.carrentalservice.carRental.service.CarRentalService;
 
+import javax.management.Notification;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -111,6 +117,8 @@ public class HomeStageController {
     public TableColumn<Car, String> carPriceColumn;
     @FXML
     ProgressBar progressBar;
+    @FXML
+    NotificationPane notificationPane;
 
     @FXML
     public void initialize() {
@@ -147,7 +155,7 @@ public class HomeStageController {
                         if (carDataTableView.getSelectionModel().getSelectedItem() != null) {
                             handleOpenCarDetailsStage(carDataTableView.getSelectionModel().getSelectedItem());
                         } else {
-                            infoLabel.setText("No car selected");
+                            noCarSelected();
                         }
                     } catch (IOException e) {
                         throw new RuntimeException(e);
@@ -177,6 +185,16 @@ public class HomeStageController {
 
         carImagesTableView.addEventFilter(ScrollEvent.ANY, Event::consume);
         carDataTableView.addEventFilter(ScrollEvent.ANY, Event::consume);
+    }
+
+    private void noCarSelected() {
+        Notifications.create()
+                .title("No Car Selected")
+                .text("Please select a car.")
+                .owner(notificationPane)
+                .position(Pos.CENTER)
+                .hideAfter(Duration.seconds(2))
+                .showWarning();
     }
 
     private void updateRentalPriceLabel(int msrp) {
@@ -213,9 +231,9 @@ public class HomeStageController {
     public void rentCar(Car car, BigDecimal price, LocalDate rentalDate, LocalDate returnDate) {
         rentCarButton.setOnMouseClicked(
                 mouseEvent -> {
-                    System.out.println(car);
-                    System.out.println(rentalDate);
-                    System.out.println(returnDate);
+                    if(carDataTableView.getSelectionModel().getSelectedItem() == null){
+                        noCarSelected();
+                    }
                     CarRental carRental = CarRental.builder()
                             .car(car)
                             .price(price)
@@ -306,7 +324,6 @@ public class HomeStageController {
     }
 
     public void getCarImagesTableView(List<Car> cars) {
-        System.out.println("Pobieram zdjęcia");
         getCarImages(cars);
     }
 
