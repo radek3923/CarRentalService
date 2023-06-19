@@ -40,8 +40,8 @@ public class HomeStageController {
 
     private final CarService carService;
     private final CarRentalService carRentalService;
-    private final String defaultPrice = "100";
-    private final String maxPrice = "1000";
+    private final String defaultMinPrice = "100";
+    private final String defaultMaxPrice = "1000";
     private final int perDayParameter = 200;
 
 
@@ -78,9 +78,9 @@ public class HomeStageController {
     protected ScrollBar scroll;
 
     @FXML
-    public DatePicker dateFromDatePicker;
+    public DatePicker rentalCarDatePicker;
     @FXML
-    public DatePicker dateToDatePicker;
+    public DatePicker returnCarDatePicker;
     @FXML
     public ComboBox<String> carMakesComboBox;
     @FXML
@@ -106,14 +106,7 @@ public class HomeStageController {
 
     @FXML
     public void initialize() {
-        searchButton.setText("Search");
-        rentalPriceLabel.setText("0");
-
-        priceRangeFromTextField.setText(defaultPrice);
-        priceRangeToTextField.setText(maxPrice);
-
-        dateFromDatePicker.setValue(LocalDate.now());
-        dateToDatePicker.setValue(LocalDate.now().plusDays(1));
+        clearSearchingOptionsButtonAction();
 
         searchButton.setOnAction(
                 actionEvent -> searchCarsButtonAction());
@@ -122,10 +115,10 @@ public class HomeStageController {
                 actionEvent -> clearSearchingOptionsButtonAction()
         );
 
-        dateFromDatePicker.setOnAction(
+        rentalCarDatePicker.setOnAction(
                 actionEvent -> updateRentalPriceLabel(carDataTableView.getSelectionModel().getSelectedItem().getMsrp())
         );
-        dateToDatePicker.setOnAction(
+        returnCarDatePicker.setOnAction(
                 actionEvent -> updateRentalPriceLabel(carDataTableView.getSelectionModel().getSelectedItem().getMsrp())
         );
 
@@ -144,8 +137,7 @@ public class HomeStageController {
                     try {
                         if (carDataTableView.getSelectionModel().getSelectedItem() != null) {
                             handleOpenCarDetailsStage(carDataTableView.getSelectionModel().getSelectedItem());
-                        }
-                        else{
+                        } else {
                             infoLabel.setText("No car selected");
                         }
                     } catch (IOException e) {
@@ -159,7 +151,7 @@ public class HomeStageController {
                     if (newValue != null) {
                         Car currentCar = carDataTableView.getSelectionModel().getSelectedItem();
                         updateRentalPriceLabel(currentCar.getMsrp());
-                        rentCar(currentCar, new BigDecimal(rentalPriceLabel.getText()), dateFromDatePicker.getValue(), dateToDatePicker.getValue());
+                        rentCar(currentCar, new BigDecimal(rentalPriceLabel.getText()), rentalCarDatePicker.getValue(), returnCarDatePicker.getValue());
 
                         int selectedIndex = carDataTableView.getSelectionModel().getSelectedIndex();
                         carImagesTableView.getSelectionModel().clearAndSelect(selectedIndex);
@@ -179,8 +171,8 @@ public class HomeStageController {
     }
 
     private void updateRentalPriceLabel(int msrp) {
-        LocalDate dateFrom = dateFromDatePicker.getValue();
-        LocalDate dateTo = dateToDatePicker.getValue();
+        LocalDate dateFrom = rentalCarDatePicker.getValue();
+        LocalDate dateTo = returnCarDatePicker.getValue();
         long differenceInDays = java.time.temporal.ChronoUnit.DAYS.between(dateFrom, dateTo);
 
         BigDecimal price = new BigDecimal(msrp / perDayParameter * differenceInDays);
@@ -260,7 +252,18 @@ public class HomeStageController {
     public void clearSearchingOptionsButtonAction() {
         carMakesComboBox.getSelectionModel().select(0);
         carModelsComboBox.getSelectionModel().select(0);
-        //TODO add more default searching options in future
+
+        priceRangeFromTextField.setText(defaultMinPrice);
+        priceRangeToTextField.setText(defaultMaxPrice);
+
+        infoLabel.setText("");
+        rentalPriceLabel.setText("0");
+
+        priceRangeFromTextField.setText(defaultMinPrice);
+        priceRangeToTextField.setText(defaultMaxPrice);
+
+        rentalCarDatePicker.setValue(LocalDate.now());
+        returnCarDatePicker.setValue(LocalDate.now().plusDays(1));
     }
 
 
