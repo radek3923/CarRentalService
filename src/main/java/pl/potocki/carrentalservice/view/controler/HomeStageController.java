@@ -65,6 +65,8 @@ public class HomeStageController {
     @FXML
     public Label infoLabel;
     @FXML
+    public Label rentalPriceLabel;
+    @FXML
     protected ScrollBar scroll;
 
     @FXML
@@ -95,6 +97,8 @@ public class HomeStageController {
     @FXML
     public void initialize() {
         searchButton.setText("Search");
+        rentalPriceLabel.setText("0");
+
         priceRangeFromTextField.setText(defaultPrice);
         priceRangeToTextField.setText(maxPrice);
 
@@ -127,6 +131,7 @@ public class HomeStageController {
                 .addListener((observableValue, oldValue, newValue) -> {
                     if (newValue != null) {
                         Car currentCar = carDataTableView.getSelectionModel().getSelectedItem();
+                        rentalPriceLabel.setText("50");
                         rentCar(currentCar, new BigDecimal(100), dateFromDatePicker.getValue(), dateToDatePicker.getValue());
 
                         int selectedIndex = carDataTableView.getSelectionModel().getSelectedIndex();
