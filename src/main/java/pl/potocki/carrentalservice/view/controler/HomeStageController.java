@@ -1,6 +1,5 @@
 package pl.potocki.carrentalservice.view.controler;
 
-import com.sun.javafx.menu.MenuBase;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -21,13 +20,13 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.controlsfx.control.NotificationPane;
 import org.controlsfx.control.Notifications;
 import org.controlsfx.control.PlusMinusSlider;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
-import org.apache.commons.lang3.StringUtils;
 import pl.potocki.carrentalservice.car.model.Car;
 import pl.potocki.carrentalservice.car.model.CarImage;
 import pl.potocki.carrentalservice.car.model.dto.CarMakeDto;
@@ -36,7 +35,6 @@ import pl.potocki.carrentalservice.car.service.CarService;
 import pl.potocki.carrentalservice.carRental.model.CarRental;
 import pl.potocki.carrentalservice.carRental.service.CarRentalService;
 
-import javax.management.Notification;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDate;

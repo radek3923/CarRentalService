@@ -72,7 +72,7 @@ public class CarDetailsStageController implements Initializable {
         availableColorComboBox.setConverter(new StringConverter<PaintCombination>() {
             @Override
             public String toString(PaintCombination paintCombination) {
-                return paintCombination != null ? paintCombination.getPaintDescription(): "";
+                return paintCombination != null ? paintCombination.getPaintDescription() : "";
             }
 
             @Override
@@ -81,7 +81,8 @@ public class CarDetailsStageController implements Initializable {
             }
         });
     }
-    public String getAngle(List<String> availableAngles, int index){
+
+    public String getAngle(List<String> availableAngles, int index) {
         int size = availableAngles.size();
         int result = (index % size + size) % size;
         return availableAngles.get(result);

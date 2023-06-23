@@ -2,7 +2,10 @@ package pl.potocki.carrentalservice.carRental.model;
 
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import pl.potocki.carrentalservice.car.model.Car;
